@@ -1,9 +1,9 @@
 # PsychTest
----
+
 A psychological testing tool implemented in PHP, CodeIgniter
 
 ## Showcase
----
+
 ### Home Page
 ![Home](/doc/img/home.png "Home")
 ### Testing
@@ -16,13 +16,13 @@ A psychological testing tool implemented in PHP, CodeIgniter
 ![Questions](/doc/img/questions.png "Questions")
 
 ## Require
----
+
 * PHP 5+
 * MySQL
 * Apache
 
 ## Pros & Cons
----
+
 ### Pros
 1. Fast editing/uploading questions by EXCEL
 2. Test can be interrupted (close browser), then resumed by entering provided `test code`
@@ -33,7 +33,7 @@ A psychological testing tool implemented in PHP, CodeIgniter
 2. Don't have enough users for debuging
 
 ## How to use
----
+
 1. Download the source code
 2. Install XAMPP [https://www.apachefriends.org/index.html](https://www.apachefriends.org/index.html)
 3. Create MySQL database for this project, execute SQLs (`/doc/sql`) for table structures
@@ -53,7 +53,7 @@ you can change admin username/password in MySQL table `admin`
 Right now PsychTest supports single and multi-choice questions. See upload page for more information.
 
 ## History
----
+
 During my job interview at BOCO, Beijing, I have to take a psycho test by a pen and paper, which almost drove me mad. After that, I just kept asking why couldn't you guys use a web app to make life easier?
 So I made BOCO a web psycho test demo, and...
 
@@ -64,9 +64,10 @@ That's why you are seeing this now on GitHub.
 The demo of PsychTest is running now on my Raspberry Pi 1, while the performance is completely acceptable.
 
 ## Bug reporting
----
+
 Bug reports & forks are overwelmingly welcome. Just throw an email to relidin@126.com then I can answer it on my Cell. I'm new to GitHub and want to make some friends :3
 
+---
 Best,
 Beichen Li
 2016-4-15
