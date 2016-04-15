@@ -8,15 +8,18 @@ A psychological testing tool implemented in PHP, CodeIgniter
 ![Home](/doc/img/home.png "Home")
 ### Testing
 ![Testing](/doc/img/test.png "Testing")
-### Admin: Answer List
+### Admin view of answers
 ![Answers](/doc/img/answers.png "Answers")
-### Admin: Question List
+### Create questions from Excel template, then save as txt file
+![Excel](/doc/img/excel.png "Excel")
+### Upload and write questions to database
 ![Questions](/doc/img/questions.png "Questions")
 
 ## Require
 ---
 * PHP 5+
 * MySQL
+* Apache
 
 ## Pros & Cons
 ---
