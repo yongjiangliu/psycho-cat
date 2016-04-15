@@ -1,55 +1,72 @@
 # PsychTest
-A Psycho Test tool based on PHP, CodeIgniter and MySQL.
-This tool was designed for psychological test.
-
-##Goal
 ---
-During my job interview at BOCO, Beijing, answering their psycho test by a pen was really driving me mad.
-I just kept asking why couldn't you guys use a web app instead? So I made this for them as a demo, and they don't give it a sh*t...
+A psychological testing tool implemented in PHP, CodeIgniter
 
-That's why it's on GitHub right now...
-
-Currently I've tried to run this site (still running) on my Raspberry Pi 1 (note, it's Rpi __1__!) . The performance is completely acceptable.
-
-##But
+## Showcase
 ---
-1. It's in Chinese only (english ver will be added soon)
-2. The GUI is simple, but OK
-3. I don't have time & user to fully debug it, so please feel free to contact me by relidin@126.com
+### Home Page
+![Home](/doc/img/home.png "Home")
+### Testing
+![Testing](/doc/img/test.png "Testing")
+### Admin: Answer List
+![Answers](/doc/img/answers.png "Answers")
+### Admin: Question List
+![Questions](/doc/img/questions.png "Questions")
 
-##Usage
+## Require
 ---
-### DB
-For people who are not familiar with CodeIgniter,
-Database settings are at `/app/config/database.php`
+* PHP 5+
+* MySQL
+
+## How to use
+---
+1. Download the source code
+2. Install XAMPP [https://www.apachefriends.org/index.html](https://www.apachefriends.org/index.html)
+3. Create MySQL database for this project, execute SQLs (`/doc/sql`) for table structures
+4. Copy the source code to apache site path
+5. Change the value of __base_url__ in `/app/config/config.php` to your domain name
+6. Set the database connection parameters in `/app/config/database.php`
+7. For FTP users, set directory permission of `/upload` to 777 to allow uploading, besides that, all directories should have permission of 755 and files 644.
+8. Don't forget to delete `/doc` upon deployment
+9. Don't forget to change the CodeIgniter status to __production__ in `/index.php` upon deployment
+
+For people who are not familiar with CodeIgniter FrameWork,
 See their official website to know more.
 [http://www.codeigniter.com](http://www.codeigniter.com)
 
-### Permissions
-Remember to change `/upload` directory's permission to 777 to allow file uploads, other than that,
-make sure directory permissions are 755 and file permissions are 644.
+Use username: `admin`, password:`1234` to login as an admin,
+you can change admin username/password in MySQL table `admin`
 
-### SQL
-Use SQL files in `/sql` to import database structures
+Right now PsychTest supports single and multi-choice questions. See upload page of admin panel for more information about question upload
 
-### Admin
-Default admin username: `admin`, password:`1234`, you can change it in table `admin`
-
-### Questions
-Single/Multi choice questions are supported, but the max options are limited to 5
-
-##Envi
+## Pros & Cons
 ---
-For the sake of simplicity, you can just install XAMPP (win/mac/linux apache + mysql + php + ftp)
-as the default environment.
-Download & install XAMPP at [https://www.apachefriends.org/index.html](https://www.apachefriends.org/index.html)
-and place project folder under a correct path (see XAMPP configuration for more details).
+### Pros
+1. Fast editing/uploading questions by EXCEL
+2. Test can be interrupted, then continue by the `test code
+3. Can't change answered questions, good for psycho test
 
-##Bug reporting
----
-Bug reporting & cooperations are always welcomed. Just throw me an email by relidin@126.com
-I'm new on GitHub and always want to make more friends :)
+### Cons
+1. Right now it's in Chinese only
+2. Don't have enough users to debug
 
+## History
 ---
-Cheers,
+During my job interview at BOCO, Beijing, I have to take a psycho test by a pen and paper, which almost drove me mad. After that, I just kept asking why couldn't you guys use a web app to make life easier?
+So I made this for BOCO as a web psycho test demo, and...
+
+And it seems like they don't give it a sh*t....
+
+That's why you are browsing this project now on GitHub.
+
+Now the demo of PsychTest is running a my Raspberry Pi 1, the performance is completely acceptable.
+
+## Bug reporting
+---
+Bug reports & forks are overwelmingly welcome. Just throw an email to relidin@126.com then I can see it on my Cell.
+I'm new to GitHub and always want to make more friends :)
+
+
+Best,
 Beichen Li
+2016-4-15
