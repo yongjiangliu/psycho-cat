@@ -4,16 +4,16 @@ A psychological testing tool implemented in PHP, CodeIgniter
 
 ## Showcase
 
+### Create questions from Excel template, then save as txt
+![Excel](/doc/img/excel.png "Excel")
+### Upload to add questions to database
+![Questions](/doc/img/questions.png "Questions")
 ### Home Page
 ![Home](/doc/img/home.png "Home")
 ### Testing
 ![Testing](/doc/img/test.png "Testing")
 ### Admin view of answers
 ![Answers](/doc/img/answers.png "Answers")
-### Create questions from Excel template, then save as txt
-![Excel](/doc/img/excel.png "Excel")
-### Upload to add questions to database
-![Questions](/doc/img/questions.png "Questions")
 
 ## Require
 
@@ -29,8 +29,7 @@ A psychological testing tool implemented in PHP, CodeIgniter
 3. Can't change answered questions, good for psycho test
 
 ### Cons
-1. Right now it's in Chinese only
-2. Don't have enough users for debuging
+1. Right now Chinese only
 
 ## How to use
 
