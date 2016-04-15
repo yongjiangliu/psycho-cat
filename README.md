@@ -10,9 +10,9 @@ A psychological testing tool implemented in PHP, CodeIgniter
 ![Testing](/doc/img/test.png "Testing")
 ### Admin view of answers
 ![Answers](/doc/img/answers.png "Answers")
-### Create questions from Excel template, then save as txt file
+### Create questions from Excel template, then save as txt
 ![Excel](/doc/img/excel.png "Excel")
-### Upload and write questions to database
+### Upload to add questions to database
 ![Questions](/doc/img/questions.png "Questions")
 
 ## Require
