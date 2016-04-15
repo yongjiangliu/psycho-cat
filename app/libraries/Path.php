@@ -15,12 +15,12 @@ class Path {
 		$this->path['ROOT'] 	 	     = '/home/pi_ftp/www';
 
     // Resources
-		$this->path['CSS']		       = base_url().'src/css/';
-		$this->path['JS']		         = base_url().'src/js/';
-    $this->path['IMG']           = base_url().'src/img/';
-    $this->path['FONT']          = base_url().'src/fonts/';
-    $this->path['ICON']          = base_url().'src/icon/';
-    $this->path['TEMPLATE']      = base_url().'src/template/';
+		$this->path['CSS']		       = base_url().'res/css/';
+		$this->path['JS']		         = base_url().'res/js/';
+    $this->path['IMG']           = base_url().'res/img/';
+    $this->path['FONT']          = base_url().'res/fonts/';
+    $this->path['ICON']          = base_url().'res/icon/';
+    $this->path['TEMPLATE']      = base_url().'res/template/';
 
 		// Base URL
 		$this->path['BASE']          = base_url();
