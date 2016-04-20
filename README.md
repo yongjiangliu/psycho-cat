@@ -66,8 +66,6 @@ The demo of PsychTest is running now on my Raspberry Pi 1, while the performance
 
 Bug reports & forks are overwelmingly welcome. Just throw an email to relidin@126.com then I can answer it on my Cell. I'm new to GitHub and want to make some friends :3
 
-## Somethingelse
-
 ---
 Best,
 Beichen Li
