@@ -71,7 +71,8 @@ Bug reports & forks are always welcome. Just drop an email to relidin@126.com. Y
 
 ## License
 
-MIT License(free to use in any where)
+MIT License(free to use anywhere)
+
 ---
 Best,
 Beichen Li
