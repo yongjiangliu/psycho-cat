@@ -2,13 +2,13 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="<?=$lang->line("page_lang")?>">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="心理测试">
+    <meta name="description" content="PsychTest">
     <meta name="author" content="bcli">
     <link rel="icon" href="<?=$ICON?>favicon.ico">
 
@@ -26,3 +26,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <script src="<?=$JS?>html5shiv.min.js"></script>
       <script src="<?=$JS?>respond.min.js"></script>
     <![endif]-->
+    <title><?=$lang->line("page_title")?></title>
+    </head>
+    <body>
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" style="padding-top:0px;">
+              <img src="<?=$IMG?>/icon_psychtest.png" alt="PsychTest" title="PsychTest"/>
+            </a>
+          </div>

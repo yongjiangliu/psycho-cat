@@ -1,32 +1,18 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-    <title>试卷列表</title>
-  </head>
-  <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" style="color:white;"><?=$TXT_TITLE?></a>
-        </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="<?=$HOME?>">主页</a></li>
-            <li class="active"><a href="<?=$ADMIN?>/panel/answer">试卷列表</a></li>
-            <li><a href="<?=$ADMIN?>/panel/question">题目列表</a></li>
-            <li><a href="<?=$ADMIN?>/panel/upload">上传题目</a></li>
+            <li><a href="<?=$HOME?>"><?=$lang->line("nav_home")?></a></li>
+            <li class="active"><a href="<?=$ADMIN?>/panel/answer"><?=$lang->line("nav_answer_list")?></a></li>
+            <li><a href="<?=$ADMIN?>/panel/question"><?=$lang->line("nav_question_list")?></a></li>
+            <li><a href="<?=$ADMIN?>/panel/upload"><?=$lang->line("nav_question_upload")?></a></li>
           </ul>
           <form id="searchAnswer" class="navbar-form navbar-right" action="<?=$ADMIN?>/panel/answer/get/name" method="post">
             <div class="form-group">
-              <input type="text" id="name" name="name" placeholder="输入姓名" class="form-control">
+              <input type="text" id="name" name="name" placeholder="<?=$lang->line("nav_enter_name")?>" class="form-control">
             </div>
-            <button type="submit" class="btn btn-info">查找试卷</button>
+            <button type="submit" class="btn btn-info"><?=$lang->line("nav_search")?></button>
           </form>
         </div><!--/.nav-collapse -->
       </div>
@@ -38,13 +24,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <thead>
              <tr>
                <th>aid</th>
-               <th>姓名</th>
-               <th>性别</th>
-               <th>交卷时间</th>
-               <th>完成度</th>
-               <th>试卷代码</th>
-               <th>详细</th>
-               <th>删除</th>
+               <th><?=$lang->line("table_name")?></th>
+               <th><?=$lang->line("table_gender")?></th>
+               <th><?=$lang->line("table_submit_time")?></th>
+               <th><?=$lang->line("table_progress")?></th>
+               <th><?=$lang->line("table_test_id")?></th>
+               <th><?=$lang->line("table_detail")?>/th>
+               <th><?=$lang->line("table_delete")?></th>
              </tr>
            </thead>
            <tbody>
@@ -115,16 +101,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          ?>
       </div>
       </div>
-    </div><!-- /.container -->
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="<?=$JS?>jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="<?=$JS?>jquery.min.js"><\/script>')</script>
-    <script src="<?=$JS?>bootstrap.min.js"></script>
-    <!-- Custom javascript-->
-    <script src="<?=$JS?>common.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="<?=$JS?>ie10-viewport-bug-workaround.js"></script>
-  </body>
-</html>
+    </div>
+    <!-- /.container -->

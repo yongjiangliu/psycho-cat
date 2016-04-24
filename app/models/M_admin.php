@@ -1,10 +1,18 @@
 <?php
+// Add this line to avoid direct script access
 defined('BASEPATH') OR exit('No direct script access allowed');
-
-class M_admin extends CI_Model {
-
+/**
+* Admin Table Model
+* @author bcli, 2016-4-24
+* @since v1.0
+*/
+class M_admin extends CI_Model
+{
+  // table name
   private $TABLE = "admin";
-
+  /**
+  * CI model constructor
+  */
   public function __construct()
   {
     parent::__construct();
@@ -31,5 +39,4 @@ class M_admin extends CI_Model {
   //-----------
   //    DELETE
   //-----------
-
 }

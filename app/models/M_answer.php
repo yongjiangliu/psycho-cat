@@ -1,10 +1,18 @@
 <?php
+// Add this line to avoid direct script access
 defined('BASEPATH') OR exit('No direct script access allowed');
-
-class M_answer extends CI_Model {
-
+/**
+* Answer Table Model
+* @author bcli, 2016-4-24
+* @since v1.0
+*/
+class M_answer extends CI_Model
+{
+  // table name
   private $TABLE = "answer";
-
+  /**
+  * CI model constructor
+  */
   public function __construct()
   {
     parent::__construct();
@@ -44,10 +52,10 @@ class M_answer extends CI_Model {
   }
 
   // get basic answer information
-  public function getShort($test_code)
+  public function getShort($test_id)
   {
     $this->db->select('aid,name,qid,finish_test,birthday');
-    $this->db->where('test_code', $test_code);
+    $this->db->where('test_id', $test_id);
     $query = $this->db->get($this->TABLE);
     $row   = $query->row_array();
     return $row;
@@ -60,7 +68,7 @@ class M_answer extends CI_Model {
   public function add($in)
   {
     // generate test code (hex of current timestamp)
-    $test_code = dechex(time());
+    $test_id = dechex(time());
     $data = array(  "name"        =>  $in['name'],
                     "occupation"  =>  $in['occupation'],
                     "gender"      =>  $in['gender'],
@@ -70,10 +78,10 @@ class M_answer extends CI_Model {
                     "marriage"    =>  $in['marriage'],
                     "finish_test" => 0,
                     "qid"         =>  1,
-                    "test_code"   =>  $test_code);
+                    "test_id"     =>  $test_id);
     if ($this->db->insert($this->TABLE, $data))
     {
-      return $test_code;
+      return $test_id;
     }
     else {
       return false;

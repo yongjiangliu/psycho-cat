@@ -1,48 +1,62 @@
 <?php
+// Add this line to avoid direct script access
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+/**
+*	Test Controller
+* Defines test pages
+* @author bcli, 2016-4-24
+* @since v1.0
+*/
 class Test extends CI_Controller
 {
-	// Constructor
+	// Language params defined in /app/language/
+	// to use another lang, modify /app/config/config.php:config["language"]
+	private $LANG;
+	// Path params defined in /app/libraries/Path.php
+	private $PATH;
+	/**
+	* Contructor of CI Controller
+	*/
 	public function __construct()
 	{
 		parent::__construct();
+		$this->lang->load("test");
+		$this->LANG = $this->lang;
+		$this->PATH = $this->path->get();
 	}
-
 	// Default controller
 	public function index()
 	{
-		$test_code = $this->input->post("test_code",true);
-		$path = $this->path->get();
+		$test_id = $this->input->post("test_id",true);
+		$path = $this->PATH;
 		$record;
-		// if test code is null
-		if ($test_code == "" || $test_code == null){
-				// invalid test code
-				redirect($path['ERROR']."/code/0", 'refresh');
+		// if test id is empty or null, redirect & print error
+		if ($test_id == "" || $test_id == null){
+				redirect($path['ERROR']."/code/0", 'refresh'); // invalid test id
 		}
-		// if not null ,check it
+		// if not null, check test id
 		else {
-			// trim it
-			$test_code = trim($test_code);
-			$record = $this->m_answer->getShort($test_code);
-			// can't get answer with that test_code, print error
+			// trim test id
+			$test_id = trim($test_id);
+			// find whether this test id exstis in database
+			$record = $this->m_answer->getShort($test_id);
+			// if can't find any answer with that test id, print error
 			if ($record == null)
 			{
-				// invalid test code
-				redirect($path['ERROR']."/code/0", 'refresh');
+				redirect($path['ERROR']."/code/0", 'refresh'); // invalid test id
 			}
-			// got answer with that test_code, proceed
+			// got answer with that test_id, proceed
 			else
 			{
-				// if test is finished, print error
+				// if we got the answer by that test id, but the test has finished, print error
 				if ($record["finish_test"] == 1)
 				{
-					redirect($path['ERROR']."/code/1", 'refresh');
+					redirect($path['ERROR']."/code/1", 'refresh');// can't use test id when test complete
 				}
-				// if not, set session
+				// if we got no error, prepare to start/continue the test
 				else
 				{
-					// prepare session data
+					// gather session data
 					$count = $this->m_question->count("all");
 
 					$sessData = array(	"name" 			=> $record["name"],
@@ -52,14 +66,17 @@ class Test extends CI_Controller
 														);
 					// set session
 					$this->session->set_userdata($sessData);
-					// output jumper
-					$out 							= $this->path->get();
+					// gather data for the jumper
+					$out 							= $path;
+					$out['lang']			= $this->LANG;
 					$out['name'] 			= $record["name"];
 					$out['birthday'] 	= $record["birthday"];
 					$out['count'] 		= $count;
 					$out['qid']				= $record['qid'];
+					// output
 					$this->load->view('v_header',$out);
 					$this->load->view('v_jumper',$out);
+					$this->load->view('v_footer',$out);
 				}
 			}
 		}
@@ -143,7 +160,7 @@ class Test extends CI_Controller
 			$finish_time 	= $record['finish_time'];
 			$name  				= $record['name'];
 			$qid 					= $record['qid'];
-			$test_code 		= $record['test_code'];
+			$test_id 			= $record['test_id'];
 
 			// calculate time difference (hour, minute, second)
 			$dteStart = new DateTime($start_time );
@@ -151,17 +168,19 @@ class Test extends CI_Controller
 			$dteDiff  = $dteStart->diff($dteEnd);
 			$time 		= $dteDiff->format("%H:%I:%S");
 
-			$out = $this->path->get();
+			$out = $this->PATH;
 			$out['qid'] 				= $qid;
 			$out['count'] 			= $count;
 			$out['time']				= $time;
 			$out['start_time']	= $start_time;
 			$out['finish_time']	= $finish_time;
 			$out['name']				= $name;
-			$out['test_code']		= $test_code;
+			$out['test_id']			= $test_id;
+			$out['lang']				= $this->LANG;
 
 			$this->load->view('v_header',$out);
 			$this->load->view('v_test_done',$out);
+			$this->load->view('v_footer',$out);
 			}
 			else
 			{
@@ -214,16 +233,18 @@ class Test extends CI_Controller
 			//$this->session->set_userdata('last_qid', strval($last_qid++));
 			$this->session->set_userdata('qid', $qid);
 			// show page
-			$out = $this->path->get();
+			$out = $this->PATH;
 			$out['qid'] 			= $record['qid'];
 			$out['question'] 	= $record['question'];
 			$out['type']			= $record['type'];
 			$out['options'] 	= $options;
+			$out['lang']			= $this->LANG;
 			// print user name and count
 			$out['name'] 			= $this->session->userdata('name');
 			$out['count'] 		= $this->session->userdata('count');
 			$this->load->view('v_header',$out);
 			$this->load->view('v_test',$out);
+			$this->load->view('v_footer',$out);
 		}
 	}
 

@@ -1,50 +1,55 @@
 <?php
+// Add this line to avoid direct script access
 defined('BASEPATH') OR exit('No direct script access allowed');
+/**
+*	PATH Library
+* Defines pathes
+* @author bcli, 2016-4-24
+* @since v1.0
+*/
+class PATH {
 
-class Path {
+  // Store path information
+  private $PATH;
 
-  // Get vars from array $path
-  private $path;
-
+  /**
+  * CI library constructor
+  */
   public function __construct()
 	{
 		$CI =& get_instance();
 		$CI->load->helper('url');
 
-    // Site folder path
-		$this->path['ROOT'] 	 	     = '/home/pi_ftp/www';
+    // Site folder PATH
+		$this->PATH['ROOT'] 	 	     = '/home/pi_ftp/www';
 
     // Resources
-		$this->path['CSS']		       = base_url().'res/css/';
-		$this->path['JS']		         = base_url().'res/js/';
-    $this->path['IMG']           = base_url().'res/img/';
-    $this->path['FONT']          = base_url().'res/fonts/';
-    $this->path['ICON']          = base_url().'res/icon/';
-    $this->path['TEMPLATE']      = base_url().'res/template/';
+		$this->PATH['CSS']		       = base_url().'res/css/';
+		$this->PATH['JS']		         = base_url().'res/js/';
+    $this->PATH['IMG']           = base_url().'res/img/';
+    $this->PATH['FONT']          = base_url().'res/fonts/';
+    $this->PATH['ICON']          = base_url().'res/icon/';
+    $this->PATH['TEMPLATE']      = base_url().'res/template/';
 
 		// Base URL
-		$this->path['BASE']          = base_url();
+		$this->PATH['BASE']          = base_url();
 
 		// Site Url
-		$this->path['SITE']          = site_url().'/';
+		$this->PATH['SITE']          = site_url().'/';
 
 		// Controllers
-		$this->path['HOME']          = site_url().'/home';
-    $this->path['TEST']          = site_url().'/test';
-		$this->path['ADMIN']         = site_url().'/admin';
-    $this->path['ERROR']         = site_url().'/error';
-
-		// AJAX Url
-		$this->path['TEST-AJAX'] 	= base_url().'/test/ajax';
-
-    // title
-    $this->path['TXT_TITLE'] = "心理测试";
-
+		$this->PATH['HOME']          = site_url().'home';
+    $this->PATH['TEST']          = site_url().'test';
+		$this->PATH['ADMIN']         = site_url().'admin';
+    $this->PATH['ERROR']         = site_url().'error';
 	}
+  /**
+  * Get $PATH
+  * @return PATH, containing pathes defined above
+  */
 	public function get()
 	{
-		return $this->path;
+		return $this->PATH;
 	}
 }
-
 ?>

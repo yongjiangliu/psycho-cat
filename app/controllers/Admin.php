@@ -1,18 +1,37 @@
 <?php
+// Add this line to avoid direct script access
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+/**
+*	Administrator Controller
+* Defines all admin pages
+* @author bcli, 2016-4-24
+* @since v1.0
+*/
 class Admin extends CI_Controller
 {
-	// Constructor
+	// Language params defined in /app/language/
+	// to use another lang, modify /app/config/config.php:config["language"]
+	private $LANG;
+	// Path params defined in /app/libraries/Path.php
+	private $PATH;
+	/**
+	* Contructor of CI Controller
+	*/
 	public function __construct()
 	{
 		parent::__construct();
+		$this->lang->load("admin");
+		$this->LANG = $this->lang;
+		$this->PATH = $this->path->get();
 	}
-
-	// Default controller, admin login
+	/**
+	* URI: domain/admin
+	* Check session, if exists, redirect to answer list page,
+	* if not exists, redirect to login page
+	*/
 	public function index()
 	{
-		$path = $this->path->get();
+		$path = $this->PATH;
 		if ($this->sessCheck()){
 			redirect($path['ADMIN']."/panel/answer/get/all", 'refresh');
 		}
@@ -20,18 +39,21 @@ class Admin extends CI_Controller
 			redirect($path['ADMIN']."/login", 'refresh');
 		}
 	}
-
-	public function login($status="")
+	/**
+	*	URI: domain/admin/login
+	* Login page, if loginFailed=true, show error message
+	*	@param status, indicate login result, can be 'failed' or 'success'
+	*/
+	public function login($loginFailed=false)
 	{
-		$out = $this->path->get();
-		if ($status == "failed"){
-			$out['status'] = false;
-		}
-		else {
-			$out['status'] = true;
-		}
+		// gathering data
+		$out 								= $this->PATH;
+		$out['lang'] 				= $this->LANG;
+		$out['loginFailed'] = $loginFailed;
+		// output
 		$this->load->view('v_header', $out);
 		$this->load->view('v_admin_login',$out);
+		$this->load->view('v_footer',$out);
 	}
 
 	public function database($cmd="", $val="")
@@ -78,7 +100,7 @@ class Admin extends CI_Controller
 							$timestamp = time();
 							$dt = new DateTime("now", new DateTimeZone($tz)); //first argument "must" be a string
 							$dt->setTimestamp($timestamp); //adjust the object to correct timestamp
-							file_put_contents("./upload/last_upload.txt",$dt->format('Y-m-d, H:i:s'));
+							file_put_contents("./upload/LAST_UPLOAD.txt",$dt->format('Y-m-d, H:i:s'));
 							break;
 						}
 						else
@@ -203,7 +225,7 @@ class Admin extends CI_Controller
 							$out['count_mc'] 	= $this->m_question->count("mc");
 							$out['count_jg'] 	= $this->m_question->count("jg");
 							$out['question'] 	= $this->m_question->getAll();
-							$out['last_upload'] = file_get_contents("./upload/last_upload.txt");
+							$out['last_upload'] = file_get_contents("./upload/LAST_UPLOAD.txt");
 							$this->load->view('v_header', $out);
 							$this->load->view("v_admin_question",$out);
 			      	break;
@@ -214,7 +236,7 @@ class Admin extends CI_Controller
 							$out['count_sc'] 	= $this->m_question->count("sc");
 							$out['count_mc'] 	= $this->m_question->count("mc");
 							$out['count_jg'] 	= $this->m_question->count("jg");
-							$out['last_upload'] = file_get_contents("./upload/last_upload.txt");
+							$out['last_upload'] = file_get_contents("./upload/LAST_UPLOAD.txt");
 							$out['question'] 	= $this->m_question->getByType($val);
 							$this->load->view('v_header', $out);
 							$this->load->view("v_admin_question",$out);
@@ -270,7 +292,7 @@ class Admin extends CI_Controller
 			// txt file configerations
 			$config['upload_path']          = './upload/';	// set upload folder file permission to 777
 			$config['allowed_types']        = 'txt';			// we only allow txt file
-			$config['file_name']        		= 'question_list.txt';			// rename the uploaded file
+			$config['file_name']        		= 'QUESTION_LIST.txt';			// rename the uploaded file
 			$config['overwrite']						= true;			// allow file override
 			$config['max_size']             = 0;				// max file size in kb, set as no limit, but php.ini may set it to 2048 kb max
 			$this->load->library('upload', $config);		// load upload library

@@ -1,15 +1,22 @@
 <?php
+// Add this line to avoid direct script access
 defined('BASEPATH') OR exit('No direct script access allowed');
-
-class M_question extends CI_Model {
-
+/**
+* Question Table Model
+* @author bcli, 2016-4-24
+* @since v1.0
+*/
+class M_question extends CI_Model
+{
+  // table name
   private $TABLE = "question";
-
+  /**
+  * CI model constructor
+  */
   public function __construct()
   {
     parent::__construct();
   }
-
   //-----------
   //    SELECT
   //-----------
@@ -137,14 +144,14 @@ class M_question extends CI_Model {
     return $this->db->insert($this->TABLE, $data);
   }
   //-----------
+  //    UPDATE
+  //-----------
+  //-----------
   //    DELETE
   //-----------
-
   // clear table (truncate will also reset PK)
   public function clear()
   {
     $this->db->truncate($this->TABLE);
   }
-
-
 }
