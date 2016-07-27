@@ -51,10 +51,8 @@ I'm not sure if my HR will use this in future, so I upload it to GitHub.
 
 Report bugs on Issue tab or send an email to relidin@126.com
 
-## License
+## MIT License
 
-MIT License
+
 ---
-Best,
-Beichen Li
-2016-7-27
+Beichen Li 2016-7-27

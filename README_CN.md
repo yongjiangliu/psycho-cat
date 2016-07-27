@@ -50,10 +50,7 @@ __这是一个未完成的项目,请等待Release__
 
 在Issue标签栏里提交或发送Email到relidin@126.com
 
-## 证书
+## 证书: MIT
 
-MIT
 ---
-祝好,
-Beichen Li
-2016-7-27
+Beichen Li 2016-7-27
