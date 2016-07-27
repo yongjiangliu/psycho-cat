@@ -1,18 +1,21 @@
-# 心理测试工具
+# PsychoCat
 
-一个用PHP和CodeIgniter框架写的心理测试网站。
+用 PHP (CodeIgniter), MySQL & BootStrap 实现的一个心理测试工具
+[English Version](README.md)
+
+__这是一个未完成的项目,请等待Release__
 
 ## 展示
 
-### 使用Excel创建并排列问题，另存为txt
+### 利用EXCEL创建问题和选项,然后另存为CSV
 ![Excel](/doc/img/excel.png "Excel")
-### 上传txt文件，自动写入数据库
+### 通过网页上传CSV,来添加数据到MySQl
 ![Questions](/doc/img/questions.png "Questions")
 ### 主页
 ![Home](/doc/img/home.png "Home")
-### 答卷
+### 答题中
 ![Testing](/doc/img/test.png "Testing")
-### 使用管理员查看答案
+### 管理员界面
 ![Answers](/doc/img/answers.png "Answers")
 
 ## 需求
@@ -24,50 +27,33 @@
 ## 优缺点
 
 ### 优点
-1. 问题用EXCEL编辑之后直接存成txt上传，方便小白用户
-2. 只要记住系统分配给你的试卷代码，就可以在重启浏览器后继续从同一位置答题
-3. 受试者不能更改已答的问题，更符合心理测试的需求
-4. 也可以使用箭头和回车答题，提高速度
+1. 利用 EXCEL + CSV 快速编辑和上传问题
+2. 用户可以中断&恢复答题(比如:去吃午饭再回来继续)
+3. 用户不能修改已经回答的答案
+4. 用户可以通过键盘加快答题速度
+5. 多语言支持
 
 ### 缺点
-1. 目前只有中文版
-2. UI目前有点太简单了，需要改善
-3. 可能存在一些未修正的BUG
+1. 需要你的帮助来改进&和除虫
+2. 目前不支持含有图像的问题
 
-## 如何使用
+## 使用
 
-1. 安装XAMPP        [https://www.apachefriends.org/index.html](https://www.apachefriends.org/index.html)
-2. 创建MySQL数据库，使用`/doc/sql`中的SQL文件来创建表结构
-3. `cd`到阿帕奇的网站目录，`git clone`项目代码
-4. 修改`/app/config/config.php`中的__base_url__为你的网站域名
-5. 修改`/app/config/database.php`中的MySQL数据库连接设置
-6. `/upload`文件夹权限应该为777，其他文件夹权限应为755，文件为644
-7. 部署后别忘了删除`/doc`文件夹
-8. 部署后别忘了更改`/index.php`中的状态名到__production__，以禁止Debug信息
+安装XAMPP, 并执行`/doc/sql`下的`sql`文件创建数据库表
 
-如果你没有接触过CodeIgniter，可以戳这里
-[http://www.codeigniter.com](http://www.codeigniter.com)
+## 历史
 
-管理员登录的默认用户名:`admin`, 密码:`1234`
-你可以在表`admin`中修改管理员用户名和密码
+我在北京亿阳信通面试的时候心理测试是用纸笔的,非常麻烦,于是自己做了这个网站.
+因为不知道HR是否会采用,所以放到了GitHub.
 
-现在本项目支持单选和多选，请见管理员的上传页面了解更多Excel的编写规则
+## 报错
 
-## 黑历史
-
-在我面试亿阳信通的时候心理测试是用笔写的，要做三个小时很蛋疼。于是我在等通知的时候自己做了一个网站版的心理测试，觉得会节省后面的人不少的做题时间。
-
-结果我给HR看了我的demo。
-然后HR根本不鸟我……
-
-所以我就把源代码发GitHub喽，虽然估计也木有人用但是总比烂在硬盘里好你说是吧 ：3
-
-## 错误报告
-
-非常欢迎报告错误！如果你想报告错误或者交个朋友请发邮件到relidin@126.com，或者直接在本项目的Issue里提交。
+在Issue标签栏里提交或发送Email到relidin@126.com
 
 ## 证书
-MIT证书(随便用)
 
+MIT
 ---
-Beichen Li 于 2016-4-15
+祝好,
+Beichen Li
+2016-7-27
