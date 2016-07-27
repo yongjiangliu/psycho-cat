@@ -1,4 +1,6 @@
+
 # PsychoCat
+![logo](doc/img/logo.jpg)
 
 用 PHP (CodeIgniter), MySQL & BootStrap 实现的一个心理测试工具
 [English Version](README.md)
@@ -8,15 +10,15 @@ __这是一个未完成的项目,请等待Release__
 ## 展示
 
 ### 利用EXCEL创建问题和选项,然后另存为CSV
-![Excel](/doc/img/excel.png "Excel")
+![Excel](doc/img/excel.png "Excel")
 ### 通过网页上传CSV,来添加数据到MySQl
-![Questions](/doc/img/questions.png "Questions")
+![Questions](doc/img/questions.png "Questions")
 ### 主页
-![Home](/doc/img/home.png "Home")
+![Home](doc/img/home.png "Home")
 ### 答题中
-![Testing](/doc/img/test.png "Testing")
+![Testing](doc/img/test.png "Testing")
 ### 管理员界面
-![Answers](/doc/img/answers.png "Answers")
+![Answers](doc/img/answers.png "Answers")
 
 ## 需求
 

@@ -1,4 +1,5 @@
 # PsychoCat
+![logo](doc/img/logo.jpg)
 
 A psychological testing tool implemented in PHP (CodeIgniter), MySQL & BootStrap
 [中文版说明](README_CN.md)
