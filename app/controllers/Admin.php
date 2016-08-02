@@ -3,27 +3,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Admin extends CI_Controller
 {
+	private $out;
 	// Constructor
 	public function __construct()
 	{
 		parent::__construct();
+		$this->out = $this->conf->path;
 	}
 
 	// Default controller, admin login
 	public function index()
 	{
-		$path = $this->path->get();
+		$controller = $this->out;
 		if ($this->sessCheck()){
-			redirect($path['ADMIN']."/panel/answer/get/all", 'refresh');
+			redirect($controller['ADMIN']."/panel/answer/get/all", 'refresh');
 		}
 		else {
-			redirect($path['ADMIN']."/login", 'refresh');
+			redirect($controller['ADMIN']."/login", 'refresh');
 		}
 	}
 
 	public function login($status="")
 	{
-		$out = $this->path->get();
+		$out = $this->out;
 		if ($status == "failed"){
 			$out['status'] = false;
 		}
@@ -68,7 +70,7 @@ class Admin extends CI_Controller
 								// insert
 								$this->m_question->add($data);
 							}
-							$out = $this->path->get();
+							$out = $this->out;
 							echo "<html><head><title>更新成功！</title></head><body>\n";
 							echo "<h1>数据库更新成功！</h1>\n";
 							echo "<p><b><a href='".$out['ADMIN']."/panel/question/get/all'>到题目列表确认</a></b></p>\n";
@@ -83,7 +85,7 @@ class Admin extends CI_Controller
 						}
 						else
 						{
-							$out = $this->path->get();
+							$out = $this->out;
 							echo "<html><head><title>更新失败！</title></head><body>\n";
 							echo "<h1>数据库更新失败！</h1>\n";
 							echo "<p><b>无法使用file()解析INSERT_PRE.txt</b></p>\n";
@@ -94,7 +96,7 @@ class Admin extends CI_Controller
 					}
 					else
 					{
-						$out = $this->path->get();
+						$out = $this->out;
 						echo "<html><head><title>更新成功！</title></head><body>\n";
 						echo "<h1>数据库更新失败！</h1>\n";
 						echo "<p><b>找不到INSERT_PRE.txt</b></p>\n";
@@ -114,7 +116,7 @@ class Admin extends CI_Controller
 	// check username/password and issue session
 	public function check()
 	{
-		$path = $this->path->get();
+		$path = $this->out;
 		$username = $this->input->post("username");
 		$password = $this->input->post("password");
 		if ($this->m_admin->get($username,$password) != null){
@@ -144,9 +146,8 @@ class Admin extends CI_Controller
 	// type: answer, question, upload
 	public function panel($object="", $cmd = "", $type = "", $val = "")
 	{
-		$path = $this->path->get();
 		if ($this->sessCheck()){
-			$out = $this->path->get();
+			$out = $this->out;
 			switch ($object) {
 				case "answer":
 						// fetch all answers (ordered by finish_time desc)

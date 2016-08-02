@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <span class="icon-bar"></span>
           </button>
           </button>
-          <a class="navbar-brand" style="color:white;"><?=$TXT_TITLE?></a>
+          <a class="navbar-brand" style="color:white;"><?=APP_NAME?></a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">

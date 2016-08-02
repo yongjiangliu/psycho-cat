@@ -1,7 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-    <title>试卷详情</title>
   </head>
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -13,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" style="color:white;"><?=$TXT_TITLE?></a>
+          <a class="navbar-brand" style="color:white;"><?=$APP_NAME?></a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -89,7 +88,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               }
               echo "<tr>\n";
               echo "\t<td>".$data['aid']          ."</td>\n";
-              echo "\t<td>".$data['test_code']    ."</td>\n";
+              echo "\t<td>".$data['test_id']    ."</td>\n";
               echo "\t<td>".$data['finish_test']  ."</td>\n";
               echo "\t<td>".$data['qid']."/".$count ."</td>\n";
               echo "\t<td>".$time                 ."</td>\n";

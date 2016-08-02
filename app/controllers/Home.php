@@ -3,16 +3,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Home extends CI_Controller
 {
+	private $out;
+
 	// Constructor
 	public function __construct()
 	{
 		parent::__construct();
+		$this->out = $this->conf->path;
 	}
 
 	// Default controller
 	public function index()
 	{
-		$out = $this->path->get();
+		$out = $this->out;
 		$this->load->view('v_header',$out);
 		$this->load->view('v_home',$out);
 	}
@@ -44,7 +47,7 @@ class Home extends CI_Controller
 		else {
 			// store user info, generate test code
 			$test_code = $this->m_answer->add($in);
-			$out = $this->path->get();
+			$out = $this->out;
 			if ($test_code == false){
 				$out['test_code'] = '--ERROR--';
 			}
@@ -58,7 +61,7 @@ class Home extends CI_Controller
 	}
 	public function inputTestCode()
 	{
-		$out = $this->path->get();
+		$out = $this->out;
 		$out['status'] = "in";
 		$this->load->view('v_header',$out);
 		$this->load->view('v_test_code',$out);

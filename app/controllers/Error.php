@@ -3,23 +3,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Error extends CI_Controller
 {
+	private $out;
 	// Constructor
 	public function __construct()
 	{
 		parent::__construct();
+		$this->out = $this->conf->path;
 	}
 
 	// Default controller
 	public function index()
 	{
-		$out = $this->path->get();
+		$out = $this->out;
 		$this->load->view('v_header',$out);
 		$this->load->view('v_home',$out);
 	}
 	public function code($errorCode)
 	{
-		$out = $this->path->get();
+		$out = $this->out;
 		$out['errorMsg'] = $this->parseErrorCode($errorCode);
+		$this->load->view('v_header',$out);
+		$this->load->view('v_error',$out);
+	}
+
+	public function notFound()
+	{
+		$out = $this->out;
+		$out['errorMsg'] = $this->parseErrorCode(404);
 		$this->load->view('v_header',$out);
 		$this->load->view('v_error',$out);
 	}
@@ -67,10 +77,13 @@ class Error extends CI_Controller
 				case '12':
 						$errorMsg = "无法获取答卷数据";
 						break;
+				case '404':
+						$errorMsg = "页面不存在";
 				default:
-        	$errorMsg 	= "未知错误类型";
+        				$errorMsg 	= "未知错误类型";
 					break;
 		}
 		return $errorMsg;
 	}
+
 }

@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="心理测试">
     <meta name="author" content="bcli">
-    <link rel="icon" href="<?=$ICON?>favicon.ico">
+    <link rel="icon" href="<?=$IMG?>favicon.ico">
 
     <!-- Bootstrap core CSS -->
     <link href="<?=$CSS?>bootstrap.min.css" rel="stylesheet">
@@ -26,3 +26,4 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <script src="<?=$JS?>html5shiv.min.js"></script>
       <script src="<?=$JS?>respond.min.js"></script>
     <![endif]-->
+    <title><?=$APP_NAME?></title>
