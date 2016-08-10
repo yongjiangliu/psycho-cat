@@ -126,4 +126,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('m_answer','m_question','m_admin');
+$autoload['model'] = array('m_exams','m_questions','m_admins');

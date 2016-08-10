@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+ * Class Home
+ * controller of index page
+ * @author bcli, 2016-8-9
+ */
 class Home extends CI_Controller
 {
 	private $out;

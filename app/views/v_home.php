@@ -19,7 +19,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <li><a href="<?=$ADMIN?>">管理员登录</a></li>
             <li><a href="<?=$HOME?>/inputTestCode">输入试卷编号</a></li>
           </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="<?=$ADMIN?>"><img src="<?=$IMG?>/github.png"></li>
+            <li class="dropdown">
+              <img src="<?=$IMG?>/lang.png"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+              </ul>
+            </li>
+          </ul>
         </div><!--/.nav-collapse -->
+
       </div>
     </nav>
 

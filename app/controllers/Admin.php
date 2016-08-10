@@ -1,6 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+ * Class Admin
+ * controller of administrator login & management
+ * @author bcli, 2016-8-9
+ */
+
 class Admin extends CI_Controller
 {
 	private $out;
