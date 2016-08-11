@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c626932f-13a1-43a1-bb6f-b9be69fb4843" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/Test.php" afterPath="$PROJECT_DIR$/app/controllers/Test.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/M_exams.php" afterPath="$PROJECT_DIR$/app/models/M_exams.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/M_questions.php" afterPath="$PROJECT_DIR$/app/models/M_questions.php" />
     </list>
     <ignored path="PsychoCat.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,21 +26,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Test.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/controllers/Test.php">
+      <file leaf-file-name="Home.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controllers/Home.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="555">
-              <caret line="315" column="34" selection-start-line="315" selection-start-column="34" selection-end-line="315" selection-end-column="34" />
+            <state relative-caret-position="1332">
+              <caret line="74" column="0" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Home.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/Home.php">
+      <file leaf-file-name="M_questions.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/models/M_questions.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-39">
-              <caret line="30" column="55" selection-start-line="30" selection-start-column="55" selection-end-line="30" selection-end-column="55" />
+            <state relative-caret-position="-1677">
+              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -50,8 +49,8 @@
       <file leaf-file-name="M_exams.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/models/M_exams.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="537">
-              <caret line="502" column="38" selection-start-line="502" selection-start-column="38" selection-end-line="502" selection-end-column="38" />
+            <state relative-caret-position="144">
+              <caret line="248" column="0" selection-start-line="248" selection-start-column="0" selection-end-line="259" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -93,12 +92,12 @@
         <option value="$PROJECT_DIR$/res/css/home.css" />
         <option value="$PROJECT_DIR$/app/controllers/Admin.php" />
         <option value="$PROJECT_DIR$/app/controllers/Home.php" />
-        <option value="$PROJECT_DIR$/app/models/M_questions.php" />
         <option value="$PROJECT_DIR$/app/config/autoload.php" />
         <option value="$PROJECT_DIR$/app/controllers/Exam.php" />
         <option value="$PROJECT_DIR$/app/models/M_admins.php" />
         <option value="$PROJECT_DIR$/app/models/M_exams.php" />
         <option value="$PROJECT_DIR$/app/controllers/Test.php" />
+        <option value="$PROJECT_DIR$/app/models/M_questions.php" />
       </list>
     </option>
   </component>
@@ -945,12 +944,12 @@
       <workItem from="1470635376403" duration="10000" />
       <workItem from="1470702370122" duration="2673000" />
       <workItem from="1470792725372" duration="17359000" />
-      <workItem from="1470875039138" duration="4306000" />
+      <workItem from="1470875039138" duration="5439000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30575000" />
+    <option name="totallyTimeSpent" value="31708000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1455" y="-73" width="1246" height="877" extended-state="0" />
@@ -1267,13 +1266,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/M_questions.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="3" column="18" selection-start-line="3" selection-start-column="18" selection-end-line="3" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/Admin.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-360">
@@ -1354,26 +1346,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/Home.php">
+    <entry file="file://$PROJECT_DIR$/app/controllers/Test.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-39">
-          <caret line="30" column="55" selection-start-line="30" selection-start-column="55" selection-end-line="30" selection-end-column="55" />
+        <state relative-caret-position="483">
+          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/M_exams.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="537">
-          <caret line="502" column="38" selection-start-line="502" selection-start-column="38" selection-end-line="502" selection-end-column="38" />
+        <state relative-caret-position="144">
+          <caret line="248" column="0" selection-start-line="248" selection-start-column="0" selection-end-line="259" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/Test.php">
+    <entry file="file://$PROJECT_DIR$/app/controllers/Home.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="315" column="34" selection-start-line="315" selection-start-column="34" selection-end-line="315" selection-end-column="34" />
+        <state relative-caret-position="1332">
+          <caret line="74" column="0" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/M_questions.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1677">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding />
         </state>
       </provider>

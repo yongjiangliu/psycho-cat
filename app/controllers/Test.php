@@ -317,5 +317,4 @@ class Test extends CI_Controller
         $bool = $this->m_exams->truncate ();
         var_dump($bool);
     }
-
 }
