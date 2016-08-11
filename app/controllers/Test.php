@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Model unit test
+ * Unit tests
  * @author bcli, 2016-8-9
  * @since v0.1.0
  */
@@ -15,13 +15,16 @@ class Test extends CI_Controller
     }
 
     /**
-     * unit test of model m_admins
+     * unit tests of model m_admins
      * @since v0.1.0
      */
     public function admin()
     {
         /*
-         * ---------- API list
+         * ===================
+         *  Model admin  APIs
+         * ===================
+         * -------------------------------------------------- SELECT
          * getAll ()
          * getById ($admin_id)
          * getByUsername ($username)
@@ -29,13 +32,18 @@ class Test extends CI_Controller
          * idExists ($admin_id)
          * userPassPairExists ($username, $password)
          * authed ($username, $password, $ip, $datetime)
+         * -------------------------------------------------- INSERT
          * add ($username, $password, $id, $ip, $datetime)
+         * ---------- UPDATE
          * changePassword ($admin_id, $oldPassword, $newPassword, $id, $ip, $datetime)
          * updateLoginInfo ($username, $password, $ip, $datetime)
-         *  remove ($admin_id, $id, $ip, $datetime)
+         * -------------------------------------------------- DELETE
+         * remove ($admin_id, $id, $ip, $datetime)
         */
 
-        echo "Testing model admin";
+        echo "======================<br>";
+        echo " Testing model m_admin<br>";
+        echo "======================<br>";
         $result = array();
 
         // getAll ()
@@ -115,6 +123,7 @@ class Test extends CI_Controller
 
     /**
      * unit test of model m_questions
+     * @since v0.1.0
      */
     public function question()
     {
@@ -122,11 +131,191 @@ class Test extends CI_Controller
     }
 
     /**
-     * unit test of model m_exams
+     * unit tests of model m_exams
+     * @since v0.1.0
      */
     public function exam()
     {
+        /*
+         * ===================
+         *  Model exam  APIs
+         * ===================
+         * -------------------------------------------------- SELECT
+         * getAll ()
+         * getFinished ()
+         * getUnfinished ()
+         * getById ($exam_id)
+         * getByName ($name)
+         * getByGenderCode ($genderCode)
+         * getByMarriageCode ($marriageCode)
+         * getByEducation ($education)
+         * getByBloodType ($bloodType)
+         * getByAge ($age)
+         * getByResumeCode ($resume_code)
+         * getByAgeWithinRange ($minAge, $maxAge)
+         * getByFinishTime ($datetime)
+         * getByFinishTimeWithinRange ($startDatetime, $endDatetime)
+         * nameExists ($name)
+         * idExists ($exam_id)
+         * resumeCodeExists ($resume_code)}
+         * resumeCodeCorrect ($exam_id, $resume_code)
+         * -------------------------------------------------- INSERT
+         * add ($name, $occupation, $gender, $birthday, $education, $bloodType,
+                             $marriage, $resume_code, $created_from, $created_at)
+         *
+         * -------------------------------------------------- UPDATE
+         * appendAnswer ($exam_id, $answer)
+         * setStartTime ($exam_id, $start_at)
+         * setFinishTime ($exam_id, $finish_at)
+         * finishExam ($exam_id)
+         * -------------------------------------------------- DELETE
+         * deleteById ($exam_id)
+         * deleteByName ($name)
+         * deleteBeforeDatetime ($datetime)
+         * truncate ()
+         */
+        echo "======================<br>";
+        echo " Testing model m_exam<br>";
+        echo "======================<br>";
+        $result = array();
 
+        // getAll ()
+        echo "<br><br>getAll<br>";
+        $result = $this->m_exams->getAll();
+        foreach ($result as $row) {var_dump($row);}
+
+        // getFinished ()
+        echo "<br><br>getFinished<br>";
+        $result = $this->m_exams->getFinished();
+        foreach ($result as $row) {var_dump($row);}
+
+        // getUnfinished ()
+        echo "<br><br>getUnfinished<br>";
+        $result = $this->m_exams->getUnfinished();
+        foreach ($result as $row) {var_dump($row);}
+
+        // getById ($exam_id)
+        echo "<br><br>getById<br>";
+        $result = $this->m_exams->getById(1);
+        foreach ($result as $row) {var_dump($row);}
+
+        // getByName ($name)
+        echo "<br><br>getByName<br>";
+        $result = $this->m_exams->getByName("bcli");
+        foreach ($result as $row) {var_dump($row);}
+
+        // getByGenderCode ($genderCode)
+        echo "<br><br>getByGenderCode<br>";
+        $result = $this->m_exams->getByGenderCode(1);
+        foreach ($result as $row) {var_dump($row);}
+
+        // getByMarriageCode ($marriageCode)
+        echo "<br><br>getByMarraigeCode<br>";
+        $result = $this->m_exams->getByMarriageCode(1);
+        foreach ($result as $row) {var_dump($row);}
+
+
+        // getByEducation ($education)
+        echo "<br><br>getByEducation<br>";
+        $result = $this->m_exams->getByEducation("Master");
+        foreach ($result as $row) {var_dump($row);}
+
+        // getByBloodType ($bloodType)
+         echo "<br><br>getByBloodType<br>";
+        $result = $this->m_exams->getByBloodType("A");
+        foreach ($result as $row) {var_dump($row);}
+
+        // getByAge ($age)
+         echo "<br><br>getByAge<br>";
+        $result = $this->m_exams->getByAge(29);
+        foreach ($result as $row) {var_dump($row);}
+
+        // getByResumeCode ($resume_code)
+        echo "<br><br>getByResumeCode<br>";
+        $result = $this->m_exams->getByResumeCode("xyz");
+        foreach ($result as $row) {var_dump($row);}
+
+        // getByAgeWithinRange ($minAge, $maxAge)
+        echo "<br><br>getByAgeWithinRange<br>";
+        $result = $this->m_exams->getByAgeWithinRange(20,30);
+        foreach ($result as $row) {var_dump($row);}
+
+        // getByFinishTime ($datetime)
+        echo "<br><br>getByFinishTime<br>";
+        $result = $this->m_exams->getByFinishTime("2016-8-11 9:00:00");
+        foreach ($result as $row) {var_dump($row);}
+
+        // getByFinishTimeWithinRange ($startDatetime, $endDatetime)
+        echo "<br><br>getByFinishTimeWithinRange<br>";
+        $result = $this->m_exams->getByFinishTime("2016-8-11 9:00:00", "2016-8-11 10:00:00");
+        foreach ($result as $row) {var_dump($row);}
+
+        // nameExists ($name)
+        echo "<br><br>nameExists<br>";
+        $bool = $this->m_exams->nameExists("bcli");
+        var_dump($bool);
+
+        // idExists ($exam_id)
+        echo "<br><br>idExists<br>";
+        $bool = $this->m_exams->idExists(1);
+        var_dump($bool);
+
+        // resumeCodeExists ($resume_code)
+        echo "<br><br>resumeCodeExists<br>";
+        $bool = $this->m_exams->resumeCodeExists("xyz");
+        var_dump($bool);
+
+        // resumeCodeCorrect ($exam_id, $resume_code)
+        echo "<br><br>resumeCodeCorrect<br>";
+        $bool = $this->m_exams->resumeCodeCorrect(1,"xyz");
+        var_dump($bool);
+
+        // add ($name, $occupation, $gender, $birthday, $education, $bloodType,
+        // $marriage, $resume_code, $created_from, $created_at)
+        echo "<br><br>add<br>";
+        $bool = $this->m_exams->add('bcli','slave','male','1987-10-03','master','A','unmarried','xxx',
+            '2016-8-11 9:00:00','127.0.0.1');
+        var_dump($bool);
+
+        // appendAnswer ($exam_id, $answer)
+        echo "<br><br>appendAnswer<br>";
+        $bool = $this->m_exams->appendAnswer(1,"ABD");
+        var_dump($bool);
+
+        // setStartTime ($exam_id, $start_at)
+        echo "<br><br>setStartTime<br>";
+        $bool = $this->m_exams->setStartTime(1,"2016-8-11 11:00:00");
+        var_dump($bool);
+
+        // setFinishTime ($exam_id, $finish_at
+        echo "<br><br>setFinishTime<br>";
+        $bool = $this->m_exams->setFinishTime (1,"2016-8-11 12:00:00");
+        var_dump($bool);
+
+        // finishExam ($exam_id)
+        echo "<br><br>finishExam<br>";
+        $bool = $this->m_exams->finishExam (6);
+        var_dump($bool);
+
+        // deleteById ($exam_id)
+        echo "<br><br>deleteById<br>";
+        $bool = $this->m_exams->deleteById (7);
+        var_dump($bool);
+
+        // deleteByName ($name)
+        echo "<br><br>deleteById<br>";
+        $bool = $this->m_exams->deleteByName ("whoever");
+        var_dump($bool);
+
+        // deleteBeforeDatetime ($datetime)
+        echo "<br><br>deleteBeforeDatetime<br>";
+        $bool = $this->m_exams->deleteBeforeDatetime ("2016-1-1 1:11:11");
+        var_dump($bool);
+
+        // truncate ()
+        echo "<br><br>truncate<br>";
+        $bool = $this->m_exams->truncate ();
+        var_dump($bool);
     }
 
 }

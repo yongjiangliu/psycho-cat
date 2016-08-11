@@ -81,8 +81,8 @@ class M_exams extends CI_Model {
   }
 
   /**
-   * get record by a given subject name
-   * DESC by 'finished_at'
+   * get record by name of subject
+   * DESC by 'finish_at'
    * @since v0.1.0
    * @param $name
    * @return array
@@ -90,31 +90,47 @@ class M_exams extends CI_Model {
   public function getByName ($name)
   {
     $this->db->select('*');
-    $this->db->where('name', $name);
+    $this->db->where('subject_name', $name);
     $this->db->order_by('finish_at', 'DESC');
     $query = $this->db->get($this->table);
     return $query->result_array();
   }
 
   /**
-   * get record by given subject gender
-   * DESC by 'finished_at'
+   * get record by gender of the subject
+   * DESC by 'finish_at'
    * @since v0.1.0
-   * @param $gender
+   * @param $genderCode, 1 = male, 0 = female
    * @return array
    */
-  public function getByGender ($gender)
+  public function getByGenderCode ($genderCode)
   {
     $this->db->select('*');
-    $this->db->where('subject_gender', $gender);
+    $this->db->where('subject_gender', $genderCode);
     $this->db->order_by('finish_at', 'DESC');
     $query = $this->db->get($this->table);
     return $query->result_array();
   }
 
+    /**
+     * get record by martial status of the subject
+     * DESC by 'finish_at'
+     * @since v0.1.0
+     * @param $marriageCode, 1 = married, 0 = unmarried
+     * @return mixed
+     */
+    public function getByMarriageCode ($marriageCode)
+    {
+        $this->db->select('*');
+        $this->db->where('subject_marriage', $marriageCode);
+        $this->db->order_by('finish_at', 'DESC');
+        $query = $this->db->get($this->table);
+        return $query->result_array();
+    }
+
   /**
-   * get record by given subject education level
-   * DESC by 'finished_at'
+   * get record by education level of subject
+   * DESC by 'finish_at'
    * @since v0.1.0
    * @param $education
    * @return array
@@ -129,8 +145,8 @@ class M_exams extends CI_Model {
   }
 
   /**
-   * get record by given subject blood type
-   * DESC by 'finished_at'
+   * get record by blood type of subject
+   * DESC by 'finish_at'
    * @since v0.1.0
    * @param $bloodType
    * @return array
@@ -138,24 +154,9 @@ class M_exams extends CI_Model {
   public function getByBloodType ($bloodType)
   {
     $this->db->select('*');
-    $this->db->where('subject_bloodType', $bloodType);
+    $this->db->where('subject_blood_type', $bloodType);
     $this->db->order_by('finish_at', 'DESC');
     $query = $this->db->get($this->table);
-    return $query->result_array();
-  }
-
-  /**
-   * get record by a given resume code
-   * @since v0.1.0
-   * @param $resume_code
-   * @return array
-   */
-  public function getByResumeCode ($resume_code)
-  {
-    $this->db->select('*');
-    $this->db->where('resume_code', $resume_code);
-    $this->db->from($this->table);
-    $query = $this->db->get();
     return $query->result_array();
   }
 
@@ -168,46 +169,60 @@ class M_exams extends CI_Model {
   public function getByAge ($age)
   {
     $this->db->select('*');
-    $this->db->where('age', $age);
-    $this->db->from($this->table);
-    $query = $this->db-get();
+    $this->db->where('subject_age', $age);
+    $query = $this->db->get($this->table);
     return $query->result_array();
   }
+    /**
+     * get record within a given age range of subject
+     * @since v0.1.0
+     * @param $minAge
+     * @param $maxAge
+     * @return array
+     */
+    public function getByAgeWithinRange ($minAge, $maxAge)
+    {
+        $this->db->select('*');
+        $this->db->where('subject_age >=', $minAge);
+        $this->db->where('subject_age <=', $maxAge);
+        $query = $this->db->get($this->table);
+        return $query->result_array();
+    }
 
   /**
-   * get record within a given subject age range
+   * get record by a given resume code
    * @since v0.1.0
-   * @param $minAge
-   * @param $maxAge
+   * @param $resume_code
    * @return array
    */
-  public function getByAgeWithinRange ($minAge, $maxAge)
+  public function getByResumeCode ($resume_code)
   {
     $this->db->select('*');
-    $this->db->where('age >=', $minAge);
-    $this->db->where('age <=', $maxAge);
-    $this->db->from($this->table);
-    $query = $this->db-get();
+    $this->db->where('resume_code', $resume_code);
+    $query = $this->db->get($this->table);
     return $query->result_array();
   }
 
+
+
   /**
-   * get all exam papers submitted in a certain datetime
+   * get all exam papers submitted at a certain datetime
+   * @since v0.1.0
    * @param $datetime
-   * @return mixed
+   * @return array
    */
   public function getByFinishTime ($datetime)
   {
     $this->db->select('*');
     $this->db->where('finished', 1);
     $this->db->where('finish_at', $datetime);
-    $this->db->from($this->table);
-    $query = $this->db-get();
+    $query = $this->db->get($this->table);
     return $query->result_array();
   }
 
   /**
    * get all exam papers submitted within a time period
+   * @since v0.1.0
    * @param $startDatetime,  earliest time point
    * @param $endDatetime,    latest time point
    * @return array
@@ -232,7 +247,7 @@ class M_exams extends CI_Model {
   public function nameExists ($name)
   {
     $this->db->select("*");
-    $this->db->where('name', $name);
+    $this->db->where('subject_name', $name);
     $this->db->from($this->table);
     $num = $this->db->count_all_results();
     if ($num != 0)
@@ -268,7 +283,7 @@ class M_exams extends CI_Model {
   }
 
   /**
-   * if a given resume code as been assigned to any exams
+   * if a given resume code as been assigned
    * @since v0.1.0
    * @param $resume_code
    * @return bool
@@ -288,6 +303,30 @@ class M_exams extends CI_Model {
       return false;
     }
   }
+
+    /**
+     * whether a given exam_id & resume_code pair exists
+     * @since v0.1.0
+     * @param $exam_id
+     * @param $resume_code
+     * @return bool
+     */
+    public function resumeCodeCorrect ($exam_id, $resume_code)
+    {
+        $this->db->select("*");
+        $this->db->where('exam_id', $exam_id);
+        $this->db->where('resume_code', $resume_code);
+        $this->db->from($this->table);
+        $num = $this->db->count_all_results();
+        if ($num != 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
   //-----------
   //    INSERT
   //-----------
@@ -308,49 +347,64 @@ class M_exams extends CI_Model {
   public function add ($name, $occupation, $gender, $birthday, $education, $bloodType,
                        $marriage, $resume_code, $created_from, $created_at)
   {
-    $data = array(  "subject_name"          =>  $name,
-                    "subject_occupation"    =>  $occupation,
-                    "subject_gender"        =>  $gender,
-                    "subject_birthday"      =>  $birthday,
-                    "subject_education"     =>  $education,
-                    "subject_bloodType"     =>  $bloodType,
-                    "subject_marriage"      =>  $marriage,
-                    "finished"              =>  0,
-                    "question_id"           =>  1,
-                    "resume_code"           =>  $resume_code,
-                    "created_from"          =>  $created_from,
-                    "created_at"            =>  $created_at
-                  );
-    return $this->db->insert($this->table, $data);
+    if (!$this->nameExists($name))
+    {
+        return false;
+    }
+    else
+    {
+        $data = array(  "subject_name"          =>  $name,
+            "subject_occupation"    =>  $occupation,
+            "subject_gender"        =>  $gender,
+            "subject_birthday"      =>  $birthday,
+            "subject_education"     =>  $education,
+            "subject_blood_type"    =>  $bloodType,
+            "subject_marriage"      =>  $marriage,
+            "finished"              =>  0,
+            "question_id"           =>  1,
+            "resume_code"           =>  $resume_code,
+            "created_from"          =>  $created_from,
+            "created_at"            =>  $created_at
+        );
+        return $this->db->insert($this->table, $data);
+    }
   }
   //-----------
   //    UPDATE
   //-----------
   /**
    * [important]
-   * append a new answer to 'answer_array', the delimiter of answers is one whitespace ' '
+   * append a new answer to 'answer_array', delimiter of each answer is ' '
    * @since v0.1.0
    * @param $exam_id,   which exam to add the answer to
-   * @param $new_answer answer to be added
+   * @param $new_answer, answer to be added
    * @return bool
    */
-  public function appendAnswer ($exam_id, $new_answer)
+  public function appendAnswer ($exam_id, $answer)
   {
-    $query = "update ".$this->table.
-             " set answer_array = concat (answer_array,' ','".
-              $new_answer."') where exam_id = ".$exam_id;
-    if ($this->db->simple_query($query))
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
+      if (!$this->idExists($exam_id))
+      {
+          return false;
+      }
+      else
+      {
+          $query = "update ".$this->table.
+              " set answer_array = concat (answer_array,' ','".
+              $answer."') where exam_id = ".$exam_id;
+          if ($this->db->simple_query($query))
+          {
+              return true;
+          }
+          else
+          {
+              return false;
+          }
+      }
   }
 
   /**
    * set exam start time
+   * @since v0.1.0
    * @param $exam_id,   which exam_id to modify
    * @param $start_at,  exam start time (datetime)
    * @return bool
@@ -371,6 +425,7 @@ class M_exams extends CI_Model {
 
   /**
    * set exam finish time
+   * @since v0.1.0
    * @param $exam_id,    which exam_id to modify
    * @param $finish_at,  when the exam is finished (datetime)
    * @return bool
@@ -391,6 +446,7 @@ class M_exams extends CI_Model {
 
   /**
    * set 'finished' flag to 1, after it user will not be able to answer any questions
+   * @since v0.1.0
    * @param $exam_id,    which exam_id to modify
    * @return bool
    */
@@ -419,8 +475,15 @@ class M_exams extends CI_Model {
    */
     public function deleteById ($exam_id)
     {
-        $this->db->where('exam_id', $exam_id);
-        return $this->db->delete($this->table);
+        if (!$this->idExists($exam_id))
+        {
+            return false;
+        }
+        else
+        {
+            $this->db->where('exam_id', $exam_id);
+            return $this->db->delete($this->table);
+        }
     }
 
   /**
@@ -431,19 +494,25 @@ class M_exams extends CI_Model {
    */
     public function deleteByName ($name)
     {
-        $this->db->where('name', $name);
-        return $this->db->delete($this->table);
+        if (!$this->nameExists($name))
+        {
+            return false;
+        }
+        else
+        {
+            $this->db->where('subject_name', $name);
+            return $this->db->delete($this->table);
+        }
     }
-
     /**
      * delete all exam records submitted BEFORE a given datetime
      * @since v0.1.0
      * @param $datetime
      * @return bool
      */
-    public function deleteBeforeDatetime ($time_point)
+    public function deleteBeforeDatetime ($datetime)
     {
-      $this->db->where('finish_at <= ', $time_point);
+      $this->db->where('finish_at <=', $datetime);
       return $this->db->delete($this->table);
     }
 
