@@ -42,7 +42,7 @@ class Test extends CI_Controller
         */
 
         echo "======================<br>";
-        echo " Testing model m_admin<br>";
+        echo " Testing model m_admins<br>";
         echo "======================<br>";
         $result = array();
 
@@ -127,13 +127,91 @@ class Test extends CI_Controller
      */
     public function question()
     {
+        /*
+         * ===================
+         *  Model admin  APIs
+         * ===================
+         * -------------------------------------------------- SELECT
+         * getAll ()
+         * getById ($question_id)
+         * getByTypeString ($typeString)
+         * idExists ($question_id)
+         * countAll ()
+         * countByTypeString ($typeString)
+         * -------------------------------------------------- INSERT
+         * add ($typeString, $question, $options, $scores)
+         * -------------------------------------------------- DELETE
+         * deleteById ($question_id)
+         * deleteByTypeString ($typeString)
+         * truncate ()
+         */
+        echo "======================<br>";
+        echo " Testing model m_questions<br>";
+        echo "======================<br>";
+        $result = array();
 
+        // getAll ()
+        echo "<br><br>getAll<br>";
+        $result = $this->m_questions->getAll();
+        foreach ($result as $row) {var_dump($row);}
+
+        // getById ($question_id)
+        echo "<br><br>getById<br>";
+        $result = $this->m_questions->getById(1);
+        foreach ($result as $row) {var_dump($row);}
+
+        // getByTypeString ($typeString)
+        echo "<br><br>getByTypeString<br>";
+        $result = $this->m_questions->getByTypeString('jd');
+        foreach ($result as $row) {var_dump($row);}
+
+        // idExists($questino_id)
+        echo "<br><br>idExists<br>";
+        $bool =  $this->m_questions->idExists(1);
+        var_dump($bool);
+        $bool =  $this->m_questions->idExists(-1);
+        var_dump($bool);
+
+        // countAll()
+        echo "<br><br>countAll()<br>";
+        $int =  $this->m_questions->countAll();
+        var_dump($int);
+
+        // countByTypeString ($typeString)
+        echo "<br><br>countByTypeString()<br>";
+        $int =  $this->m_questions->countByTypeString('jd');
+        var_dump($int);
+        $int =  $this->m_questions->countByTypeString('sc');
+        var_dump($int);
+        $int =  $this->m_questions->countByTypeString('mc');
+        var_dump($int);
+
+        // add ($typeString, $question, $options, $scores)
+        $options    = array ('o1','o2','o3','o4','o5','o6','o7','o8','o9','o10');
+        $scores     = array (1,2,3,4,5,6,7,8,9,10);
+        echo "<br><br>add()<br>";
+        $bool =  $this->m_questions->add('mc','choose a option',$options,$scores);
+        var_dump($bool);
+
+        // deleteById ($question_id)
+        echo "<br><br>deleteById()<br>";
+        $bool =  $this->m_questions->deleteById(3);
+        var_dump($bool);
+
+        // deleteByTypeString ($typeString)
+        echo "<br><br>deleteByTypeString()<br>";
+        $bool =  $this->m_questions->deleteByTypeString('sc');
+        var_dump($bool);
+
+        echo "<br><br>truncate()<br>";
+        $bool = $this->m_questions->truncate();
+        var_dump($bool);
     }
 
-    /**
-     * unit tests of model m_exams
-     * @since v0.1.0
-     */
+/**
+* unit tests of model m_exams
+* @since v0.1.0
+*/
     public function exam()
     {
         /*

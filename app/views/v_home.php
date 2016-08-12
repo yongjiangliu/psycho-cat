@@ -16,17 +16,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="<?=$ADMIN?>">管理员登录</a></li>
-            <li><a href="<?=$HOME?>/inputTestCode">输入试卷编号</a></li>
+            <li><a href="<?=$ADMIN?>"><?=$this->lang->line("nav_admin_login")?></a></li>
+            <li><a href="<?=$HOME?>/inputTestCode"><?=$this->lang->line("nav_resume_exam")?></a></li>
           </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="<?=$ADMIN?>"><img src="<?=$IMG?>/github.png"></li>
+          <ul id="nav-images" class="nav navbar-nav navbar-right">
+            <li>
+              <a href="https://github.com/bclicn/PsychoCat">
+                <img title="<?=$this->lang->line("nav_github")?>" src="<?=$IMG?>/github.png">
+              </a>
+            </li>
             <li class="dropdown">
-              <img src="<?=$IMG?>/lang.png"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <img title="<?=$this->lang->line("nav_language")?>" src="<?=$IMG?>/lang.png">
+              </a>
               <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
+                <?php
+                  foreach ($LANGS as $langCode => $langTxt)
+                  {
+                    echo "<li><a href='".$HOME."/lang/".$langCode."'>".$langTxt."</a></li>";
+                  }
+                ?>
               </ul>
             </li>
           </ul>
@@ -39,32 +48,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <form id="userInfo" class="form-horizontal" method="post" action="<?=$HOME?>/getTestCode">
         <!-- Name -->
         <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">姓名</label>
+          <label for="name" class="col-sm-2 control-label"><?=$this->lang->line("subject_name")?></label>
           <div class="col-sm-10">
             <input type="text" class="form-control" id="name" name="name">
           </div>
         </div>
         <!-- Occupation -->
         <div class="form-group">
-            <label for="occupation" class="col-sm-2 control-label">职业</label>
+            <label for="occupation" class="col-sm-2 control-label"><?=$this->lang->line("subject_occupation")?></label>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="occupation" name="occupation">
             </div>
         </div>
         <!-- Gender -->
         <div class="form-group">
-          <label for="gender" class="col-sm-2 control-label">性别</label>
+          <label for="gender" class="col-sm-2 control-label"><?=$this->lang->line("subject_gender")?></label>
           <div class="col-sm-10">
             <select class="form-control" id="gender" name="gender">
-              <option value="">请选择</option>
-              <option value="男">男</option>
-              <option value="女">女</option>
+              <option value=""><?=$this->lang->line("form_select")?></option>
+              <option value="1"><?=$this->lang->line("gender_male")?></option>
+              <option value="0"><?=$this->lang->line("gender_female")?></option>
             </select>
           </div>
         </div>
         <!-- Birthday -->
         <div class="form-group">
-            <label for="birthday" class="col-sm-2 control-label">生日</label>
+            <label for="birthday" class="col-sm-2 control-label"><?=$this->lang->line("subject_birthday")?></label>
             <div class="col-sm-10">
               <input type="text" class="date-picker form-control" id="birthday" name="birthday" placeholder="YYYY-MM-DD"/>
             </div>
@@ -72,23 +81,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         <!-- Education -->
         <div class="form-group">
-          <label for="education" class="col-sm-2 control-label">教育</label>
+          <label for="education" class="col-sm-2 control-label"><?=$this->lang->line("subject_education")?></label>
           <div class="col-sm-10">
             <select class="form-control" id="education" name="education">
-              <option value="">请选择</option>
-              <option value="博士">博士</option>
-              <option value="硕士">硕士</option>
-              <option value="本科">本科</option>
-              <option value="专科">专科</option>
+              <option value=""><?=$this->lang->line("form_select")?></option>
+              <option value="1"><?=$this->lang->line("education_grade_school")?></option>
+              <option value="2"><?=$this->lang->line("education_middle_school")?></option>
+              <option value="3"><?=$this->lang->line("education_high_school")?></option>
+              <option value="4"><?=$this->lang->line("education_bachelor")?></option>
+              <option value="5"><?=$this->lang->line("education_master")?></option>
+              <option value="6"><?=$this->lang->line("education_phd")?></option>
             </select>
           </div>
         </div>
         <!-- Blood Type -->
         <div class="form-group">
-          <label for="bloodType" class="col-sm-2 control-label">血型</label>
+          <label for="bloodType" class="col-sm-2 control-label"><?=$this->lang->line("subject_blood_type")?></label>
           <div class="col-sm-10">
             <select class="form-control" id="bloodType" name="bloodType">
-              <option value="">请选择</option>
+              <option value=""><?=$this->lang->line("form_select")?></option>
               <option value="A">A</option>
               <option value="B">B</option>
               <option value="AB">AB</option>
@@ -98,33 +109,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         <!-- Marriage -->
         <div class="form-group">
-          <label for="inputPassword3" class="col-sm-2 control-label">婚姻</label>
+          <label for="inputPassword3" class="col-sm-2 control-label"><?=$this->lang->line("subject_marriage")?></label>
           <div class="col-sm-10">
             <select class="form-control" id="marriage" name="marriage">
-              <option value="">请选择</option>
-              <option value="已婚">已婚</option>
-              <option value="未婚">未婚</option>
+              <option value=""><?=$this->lang->line("form_select")?></option>
+              <option value="1"><?=$this->lang->line("marriage_married")?></option>
+              <option value="0"><?=$this->lang->line("marriage_unmarried")?></option>
             </select>
           </div>
         </div>
 
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default">提交</button>
+            <button type="submit" class="btn btn-default"><?=$this->lang->line("form_submit")?></button>
           </div>
         </div>
         </form>
       </div>
     </div><!-- /.container -->
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="<?=$JS?>jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="<?=$JS?>jquery.min.js"><\/script>')</script>
-    <script src="<?=$JS?>bootstrap.min.js"></script>
-    <!-- Custom javascript-->
-    <script src="<?=$JS?>common.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="<?=$JS?>ie10-viewport-bug-workaround.js"></script>
-  </body>
-</html>
+
