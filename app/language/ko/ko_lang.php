@@ -28,16 +28,8 @@ $lang['education_phd']              = '의사';
 $lang['marriage_married']           = '결혼 한';
 $lang['marriage_unmarried']         = '미혼의';
 
-// Resume Code
-
-
-
-// Admin Panel
-
-
-// Finish Test
-
-
-// Error Messages
+// Resume Exam
+$lang['resume_exam']                = '복구 테스트';
+$lang['resume_code']                = '이력서 코드';
 
 ?>

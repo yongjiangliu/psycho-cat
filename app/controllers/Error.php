@@ -25,15 +25,7 @@ class Error extends CI_Controller
 		$this->load->view('v_header',$out);
 		$this->load->view('v_error',$out);
 	}
-
-	public function notFound()
-	{
-		$out = $this->out;
-		$out['errorMsg'] = $this->parseErrorCode(404);
-		$this->load->view('v_header',$out);
-		$this->load->view('v_error',$out);
-	}
-
+	
 	private function parseErrorCode($errorCode)
 	{
 		$errorMsg = "";
@@ -85,5 +77,4 @@ class Error extends CI_Controller
 		}
 		return $errorMsg;
 	}
-
 }

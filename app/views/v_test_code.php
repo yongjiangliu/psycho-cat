@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <form id="testCode" class="form-horizontal" method="post" action="<?=$TEST?>">
 
         <!-- Test code -->
-        <div id="warning" class="form-group bg-info">
+        <div id="" class="form-group" style="border-radius: 25px; background-color:">
           <?php
             $buttonVal        = "";
             $test_code_val    = "";

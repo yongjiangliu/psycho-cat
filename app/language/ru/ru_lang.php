@@ -28,16 +28,8 @@ $lang['education_phd']              = 'доктор';
 $lang['marriage_married']           = 'женат';
 $lang['marriage_unmarried']         = 'неженатый';
 
-// Resume Code
-
-
-
-// Admin Panel
-
-
-// Finish Test
-
-
-// Error Messages
+// Resume Exam
+$lang['resume_exam']                = 'Тест восстановления';
+$lang['resume_code']                = 'резюме кода';
 
 ?>

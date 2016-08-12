@@ -28,4 +28,7 @@ $lang['education_phd']              = '博士';
 $lang['marriage_married']           = '已婚';
 $lang['marriage_unmarried']         = '未婚';
 
+// Resume Exam
+$lang['resume_exam']                = '恢復測試';
+$lang['resume_code']                = '測試代碼';
 ?>

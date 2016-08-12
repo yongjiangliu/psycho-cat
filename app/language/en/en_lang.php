@@ -28,16 +28,8 @@ $lang['education_phd']              = 'PHD';
 $lang['marriage_married']           = 'Married';
 $lang['marriage_unmarried']         = 'Unmarried';
 
-// Resume Code
-
-
-
-// Admin Panel
-
-
-// Finish Test
-
-
-// Error Messages
+// Resume Exam
+$lang['resume_exam']                = 'Resume Exam';
+$lang['resume_code']                = 'Resume Code';
 
 ?>

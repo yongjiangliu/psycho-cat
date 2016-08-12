@@ -28,16 +28,8 @@ $lang['education_phd']              = 'ドクター';
 $lang['marriage_married']           = '結婚しました';
 $lang['marriage_unmarried']         = '未婚';
 
-// Resume Code
-
-
-
-// Admin Panel
-
-
-// Finish Test
-
-
-// Error Messages
+// Resume Exam
+$lang['resume_exam']                = '回収試験';
+$lang['resume_code']                = '履歴書コード';
 
 ?>

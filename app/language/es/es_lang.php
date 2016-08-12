@@ -28,16 +28,8 @@ $lang['education_phd']              = 'DOCTOR EN FILOSOFÍA';
 $lang['marriage_married']           = 'Casado';
 $lang['marriage_unmarried']         = 'Soltero';
 
-// Resume Code
-
-
-
-// Admin Panel
-
-
-// Finish Test
-
-
-// Error Messages
+// Resume Exam
+$lang['resume_exam']                = 'Prueba de recuperación';
+$lang['resume_code']                = 'código de examen';
 
 ?>

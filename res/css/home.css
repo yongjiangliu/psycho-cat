@@ -43,7 +43,7 @@ body {
 }
 #warning p{
   padding:15px;
-  font-weight: :bold;
+  font-weight: bold;
 }
 
 img {
@@ -61,4 +61,10 @@ img {
 
 #nav-images{
   max-height:32px;
+}
+
+#resume-code-panel{
+  max-width:500px;
+  margin-top:50px;
+  margin-bottom:100px;
 }

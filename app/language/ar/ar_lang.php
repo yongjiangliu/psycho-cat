@@ -29,7 +29,8 @@ $lang['marriage_married']           = 'متزوج';
 $lang['marriage_unmarried']         = 'اعزب';
 
 
-
-
+// Resume Exam
+$lang['resume_exam']                = 'امتحان الذاتية';
+$lang['resume_code']                = 'كود الامتحان';
 
 ?>

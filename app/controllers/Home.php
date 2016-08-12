@@ -26,22 +26,22 @@ class Home extends CI_Controller
 
 	/**
 	 * http://www.mysite.com/home
-	 * Index page if the site
+	 * Index page of the site
 	 */
 	public function index()
 	{
+		// check & set language
 		$lang = $this->getSessionLang();
-		// Get browser language settings if no 'lang' key in session
 		if ($lang == null)
 		{
 			$lang = $this->setSessionLang($this->getBrowserLang());
 		}
+		$out = $this->out;
 		$this->lang->load($lang,$lang);
-		$this->load->view('v_header',$this->out);
-		$this->load->view('v_home',$this->out);
-		$this->load->view('v_footer',$this->out);
+		$this->load->view('v_header', 	$out);
+		$this->load->view('v_home',		$out);
+		$this->load->view('v_footer',	$out);
 	}
-
 
 	/**
 	 * http://www.mysite.com/home/lang/<langCode>
@@ -60,7 +60,6 @@ class Home extends CI_Controller
 	public function getResumeCode()
 	{
 		// we don't want user to submit
-		$this->session->
 		// check list
 		$checkList = array ("name","occupation","gender","birthday","education","bloodType","marriage");
 		// filter & get posts
@@ -100,14 +99,19 @@ class Home extends CI_Controller
 	}
 
 
-	public function inputTestCode()
+	public function enterResumeCode ()
 	{
 		$out = $this->out;
-		$out['status'] = "in";
-		$this->load->view('v_header',$out);
-		$this->load->view('v_test_code',$out);
+		$lang = $this->setLang();
+		$this->load->view('v_header',			$out);
+		$this->load->view('v_enter_resume_code',$out);
+		$this->load->view('v_footer', 			$out);
 	}
 
+	/**
+	 * Get 'lang' key from session, return null if key is not set
+	 * @return langCode or null
+	 */
 	private function getSessionLang ()
 	{
 		if ($this->session->has_userdata('lang'))
@@ -120,12 +124,22 @@ class Home extends CI_Controller
 		}
 	}
 
-	private function setSessionLang ($lang)
+	/**
+	 * set language key in session
+	 * @param $langCode
+	 * @return string,  filtered lang code
+	 */
+	private function setSessionLang ($langCode)
 	{
-		$this->session->set_userdata('lang', $this->filterLangCode($lang));
-		return $lang;
+		$filteredLangCode = $this->filterLangCode($langCode);
+		$this->session->set_userdata('lang', $filteredLangCode);
+		return $filteredLangCode;
 	}
 
+	/**
+	 * get language settings from HTTP request header of client
+	 * @return string
+	 */
 	private function getBrowserLang ()
 	{
 		return substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
@@ -153,4 +167,19 @@ class Home extends CI_Controller
 		return 'en';
 	}
 
+	private function setLang ()
+	{
+		// check & set language
+		$lang = $this->getSessionLang();
+		if ($lang == null)
+		{
+			$lang = $this->setSessionLang($this->getBrowserLang());
+			$this->lang->load($lang, $lang);
+		}
+		else
+		{
+			$this->lang->load($lang, $lang);
+			return $lang;
+		}
+	}
 }
