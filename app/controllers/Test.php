@@ -230,6 +230,7 @@ class Test extends CI_Controller
          * getByBloodType ($bloodType)
          * getByAge ($age)
          * getByResumeCode ($resume_code)
+         * getByResumeCodeAndName ($resume_code, $name)
          * getByAgeWithinRange ($minAge, $maxAge)
          * getByFinishTime ($datetime)
          * getByFinishTimeWithinRange ($startDatetime, $endDatetime)

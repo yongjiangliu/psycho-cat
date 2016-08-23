@@ -43,6 +43,22 @@ class Conf {
 											'zh-cn' => '简体中文',
 											'zh-tw' => '繁體中文',
 										);
+		// Regular expressions
+		$this->config['REGEX']		 = array (
+											'subject_form' => array (
+																'name'	        => '/^(.){1,32}$/',
+                                                                'occupation'    => '/^(.){1,64}$/',
+																'gender'	    => '/^[0-1]{1}$/',
+																'birthday'      => '/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/',
+                                                                'education'     => '/^[1-6]{1}$/',
+                                                                'bloodType'     => '/^(A|B|AB|O)$/',
+                                                                'marriage'      => '/^[0-1]{1}$/'
+																),
+											'resume_code' => array (
+
+																),
+									);
+
 	}
 }
 ?>

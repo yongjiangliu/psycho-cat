@@ -4,7 +4,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Class M_questions
  * model which interacts with table 'questions'
- * each row is corresponding to a question you can set questions by downloading & editing the Excel template
+ * each row is corresponding to a question, each question can be
+ * 'jd' for judgement,
+ * 'sc' for single choice,
+ * 'mc' for multiple choice
  * @since v0.1.0
  * @author bcli, 2016-8-10
  */

@@ -32,7 +32,6 @@ $lang['marriage_unmarried']         = '未婚';
 $lang['resume_exam']                = '恢复测试';
 $lang['resume_code']                = '测试代码';
 
-
 // Questions
 $lang['question_type_jd']           = '判断';
 $lang['question_type_sc']           = '单选';
@@ -49,5 +48,6 @@ $lang['error_6']                    = '数据库错误';
 $lang['error_7']                    = '答案格式错误';
 $lang['error_8']                    = '答案提交错误';
 $lang['error_9']                    = '无法获取此题目';
-$lang['error_10']                   = '';
+$lang['error_10']                   = '表单提交错误';
+$lang['error_11']                   = '姓名已存在';
 ?>

@@ -1,14 +1,15 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Error extends CI_Controller
+
+class ErrorParser extends CI_Controller
 {
 	private $out;
 	// Constructor
 	public function __construct()
 	{
 		parent::__construct();
-		$this->out = $this->conf->path;
+		$this->out = $this->conf->config;
 	}
 
 	// Default controller

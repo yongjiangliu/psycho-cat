@@ -4,9 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Class M_admin
  * model which interacts with table 'admins'
- * default username/password is 'admin/admin', modify it as soon as you deploy PsychoCat
- * to limit the maximum admin number modify 'MAX_ADMINS' in './app/libraries/Conf.php',
- * default maximum admin number is 10
+ * default username/password is 'admin/admin', modify it as soon as possible when you deploy PsychoCat
+ * max admins allowed is defined by parameter 'MAX_ADMINS' in './app/libraries/Conf.php', 10 by default
  * @author bcli, 2016-8-9
  * @since v0.1.0
  */
@@ -22,7 +21,7 @@ class M_admins extends CI_Model {
     //    SELECT
     //-----------
     /**
-     * get everything in this table
+     * get all data in this table
      * @since v0.1.0
      * @return array
      */
@@ -33,7 +32,7 @@ class M_admins extends CI_Model {
     }
 
     /**
-     * get admin record by admin_id
+     * get record by admin_id
      * @since v0.1.0
      * @param admin_id
      * @return array
@@ -48,7 +47,7 @@ class M_admins extends CI_Model {
     }
 
     /**
-     * get admin record by username
+     * get record by username
      * @since v0.1.0
      * @param $username
      * @return array
@@ -62,7 +61,7 @@ class M_admins extends CI_Model {
         return $query->result_array();
     }
     /**
-     * check if a given username exists
+     * check if given username exists
      * @since v0.1.0
      * @param $username,    username to be checked
      * @return bool
@@ -106,7 +105,7 @@ class M_admins extends CI_Model {
     }
 
     /**
-     * check if a given username and password pair exists
+     * check if given username & password pair exists
      * @since v0.1.0
      * @param $username
      * @param $password
@@ -159,7 +158,7 @@ class M_admins extends CI_Model {
     //    INSERT
     //-----------
     /**
-     * add an admin to database
+     * add a administrator
      * @since v0.1.0
      * @param $username,        username of the new admin
      * @param $password,        password of the new admin

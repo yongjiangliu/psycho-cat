@@ -8,21 +8,64 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$test_code = dechex(time());
  *
  *	    $tz         = 'Asia/Shanghai';
-$timestamp  = time();
-$dt         = new DateTime("now", new DateTimeZone($tz)); //first argument "must" be a string
-$dt->setTimestamp($timestamp); //adjust the object to correct timestamp
-$datetime = $dt->format('Y-m-d, H:i:s');
+ *		$timestamp  = time();
+ * 		$dt         = new DateTime("now", new DateTimeZone($tz)); //first argument "must" be a string
+ *		$dt->setTimestamp($timestamp); //adjust the object to correct timestamp
+ *		$datetime = $dt->format('Y-m-d, H:i:s');
  *
  * @author bcli, 2016-8-9
  */
 
 class Exam extends CI_Controller
 {
+	private $out;
 	// Constructor
 	public function __construct()
 	{
 		parent::__construct();
+        $this->out = $this->conf->config;
 	}
+
+	/**
+	 * ------------------------------------
+	 *              ROUTES
+	 * ------------------------------------
+	 */
+	/**
+	 *
+	 * @route http://www.mysite.com/exam
+	 */
+	public function index ()
+	{
+
+	}
+	/**
+	 *
+	 * @route http://www.mysite.com/home/form[/errCode]
+	 * @param errCode null error code is defined in ./app/libraries/Conf.php
+	 */
+	public function start ()
+	{
+        // get exam_id from session
+        $exam_id = $this->getSessionExamId();
+        if ($exam_id == null)
+        {
+            // show 404
+        }
+        // check if exam_id exists
+
+        // exists, set question_id
+
+        // show exam start conformation page
+
+	}
+
+
+	public function resume ()
+	{
+
+	}
+
 
 	// Default controller
 	public function index()
@@ -81,6 +124,7 @@ class Exam extends CI_Controller
 	}
 
 	/**
+	 * http://www.mysite.com/exam/next
 	 * show next question
 	 * @since v0.1.0
 	 */
@@ -142,6 +186,7 @@ class Exam extends CI_Controller
 	}
 
 	/**
+	 * http://www.mysite.com/exam/done
 	 * called when exam finishes
 	 */
 	public function done()
@@ -349,4 +394,18 @@ class Exam extends CI_Controller
 		}
 		return $options;
 	}
+
+
+
+    private function getSessionExamId ()
+    {
+        if ($this->session->has_userdata('exam_id'))
+        {
+            return $this->session->userdata('exam_id');
+        }
+        else
+        {
+            return null;
+        }
+    }
 }

@@ -4,7 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Class M_exams
  * model which interacts with table 'exams'
- * each row is corresponding to a subject/exam paper, each exam paper has a unique resume code
+ * each row is corresponding to a subject/exam paper,
+ * resume code is unique
  * @since v0.1.0
  * @author bcli, 2016-8-10
  */
@@ -203,7 +204,21 @@ class M_exams extends CI_Model {
     return $query->result_array();
   }
 
-
+    /**
+     * get record by a given resume code & name pair
+     * @since v0.1.0
+     * @param $resume_code
+     * @param $name
+     * @return mixed
+     */
+    public function getByResumeCodeAndName ($resume_code, $name)
+    {
+        $this->db->select('*');
+        $this->db->where('resume_code', $resume_code);
+        $this->db->where('name',        $name);
+        $query = $this->db->get($this->table);
+        return $query->row_array();
+    }
 
   /**
    * get all exam papers submitted at a certain datetime
@@ -344,22 +359,24 @@ class M_exams extends CI_Model {
    * @param $created_at,  when this action took place
    * @return bool
    */
-  public function add ($name, $occupation, $gender, $birthday, $education, $bloodType,
+  public function add ($name, $occupation, $gender, $birthday, $age, $education, $bloodType,
                        $marriage, $resume_code, $created_from, $created_at)
   {
-    if (!$this->nameExists($name))
+    if ($this->nameExists($name))
     {
         return false;
     }
     else
     {
-        $data = array(  "subject_name"          =>  $name,
+        $data = array(
+            "subject_name"          =>  $name,
             "subject_occupation"    =>  $occupation,
-            "subject_gender"        =>  $gender,
+            "subject_gender"        =>  intval($gender),
             "subject_birthday"      =>  $birthday,
-            "subject_education"     =>  $education,
+            "subject_age"           =>  $age,
+            "subject_education"     =>  intval($education),
             "subject_blood_type"    =>  $bloodType,
-            "subject_marriage"      =>  $marriage,
+            "subject_marriage"      =>  intval($marriage),
             "finished"              =>  0,
             "question_id"           =>  1,
             "resume_code"           =>  $resume_code,

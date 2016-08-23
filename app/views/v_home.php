@@ -31,7 +31,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </nav>
 
     <div class="container-fluid">
-      <form id="userInfo" class="form-horizontal" method="post" action="<?=$HOME?>/getTestCode">
+      <form id="subject_info" class="form-horizontal" method="post" action="<?=$HOME?>/check">
+        <?php
+            if ($errCode != null)
+            {
+              echo "<p class='bg-danger'><strong>".$this->lang->line("error_".$errCode)."</strong></p>";
+            }
+            else
+            {
+              echo "";
+            }
+        ?>
         <!-- Name -->
         <div class="form-group">
           <label for="name" class="col-sm-3 control-label"><?=$this->lang->line("subject_name")?></label>
@@ -43,7 +53,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="form-group">
             <label for="occupation" class="col-sm-3 control-label"><?=$this->lang->line("subject_occupation")?></label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" id="occupation" name="occupation">
+                <input type="text" class="form-control" id="occupation" name="occupation">
             </div>
         </div>
         <!-- Gender -->
@@ -113,3 +123,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </form>
       </div>
     </div><!-- /.container -->
+    <!-- regular expression -->
+    <script>
+      var regex = {<?php
+          $i = 1;
+          foreach ($REGEX['subject_form'] as $name => $regex)
+          {
+            if ($i == 1)
+            {
+              echo '"'.$name.'":'.$regex;
+              $i ++;
+            }
+            else
+            {
+              echo ',"'.$name.'":'.$regex;
+              $i++;
+            }
+          }
+        ?>};</script>
