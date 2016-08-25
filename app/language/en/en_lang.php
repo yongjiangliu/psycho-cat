@@ -37,7 +37,11 @@ $lang['exam_ready']                 = 'Get ready to start a new test!';
 $lang['exam_start']                 = 'Start';
 $lang['resume_code']                = 'Resume Code';
 $lang['exam_done']                  = 'Test Finished';
-$lang['exam_time_used']             = 'Time Used';
+$lang['exam_tip_title']             = 'Tips';
+$lang['exam_tip']                   = 'You can use <kbd>arrow keys</kbd> to switch options, then press <kbd>enter</kbd> to submit';
+$lang['exam_start_at']              = 'Start Time';
+$lang['exam_finish_at']             = 'Finish Time';
+$lang['exam_duration']              = 'Duration';
 
 // Questions
 $lang['question_type']              = 'Type';

@@ -143,26 +143,26 @@ class Tool
         $min    = $diff->i;
         $sec    = $diff->s;
 
-        $output = $sec + " s";
+        $output = $sec." s";
         if ($min != 0)
         {
-            $output = $min + " m " + $output;
+            $output = $min." m ".$output;
         }
         if ($hour != 0)
         {
-            $output = $hour + " h " + $output;
+            $output = $hour." h ".$output;
         }
         if ($day != 0)
         {
-            $output = $day + " d " + $output;
+            $output = $day." d ".$output;
         }
         if ($month !=0)
         {
-            $output = $month + " m " + $output;
+            $output = $month." m ".$output;
         }
         if ($year !=0)
         {
-            $output = $year + " y " + $output;
+            $output = $year." y ".$output;
         }
         return $output;
     }

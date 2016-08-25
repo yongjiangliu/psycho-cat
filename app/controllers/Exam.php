@@ -4,15 +4,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Class Exam
  * controller of exam, including question system and resume code submission
- *     // generate test code (hex of current timestamp)
-		$test_code = dechex(time());
- *
- *	    $tz         = 'Asia/Shanghai';
- *		$timestamp  = time();
- * 		$dt         = new DateTime("now", new DateTimeZone($tz)); //first argument "must" be a string
- *		$dt->setTimestamp($timestamp); //adjust the object to correct timestamp
- *		$datetime = $dt->format('Y-m-d, H:i:s');
- *
  * @author bcli, 2016-8-9
  */
 
@@ -32,7 +23,7 @@ class Exam extends CI_Controller
 	 */
 	/**
 	 *
-	 * @route http://www.mysite.com/home/form[/errCode]
+	 * @route http://www.mysite.com/exam/
 	 * @param errCode null error code is defined in ./app/libraries/Conf.php
 	 */
 	public function index ()
@@ -41,15 +32,13 @@ class Exam extends CI_Controller
         // exit & show error if field 'resume_code' is not set
 		if (!isset($in['resume_code']))
         {
-            echo "resume code is not set";
-            //redirect($this->out['HOME']."/resume/12");
+            redirect($this->out['HOME']."/resume/12");
         }
         $resume_code = $in['resume_code'];
         // exit & show error if field 'resume_code' not exists in database
         if (!$this->m_exams->resumeCodeExists($resume_code))
         {
-            echo "resume code does not exist in database";
-            //redirect($this->out['HOME']."/resume/12");
+            redirect($this->out['HOME']."/resume/12");
         }
         // get exam record
         $recordArray = $this->m_exams->getByResumeCode($resume_code);
@@ -57,13 +46,21 @@ class Exam extends CI_Controller
         // exit & show message if the exam has been finished
         if ($record['finished'] == 1)
         {
-            //redirect($this->out['HOME']."/resume/2");
+            redirect($this->out['HOME']."/resume/2");
         }
         // passed checks, set session
-        $this->session->sess_destroy();
         $this->session->set_userdata('exam_id', $record['exam_id']);
-        // redirect to 'next' to start answering questions
-        redirect($this->out['EXAM']."/next");
+        // output exam starting guide page
+        // check session language
+        $lang = $this->tool->getSessionLang();
+        // use browser language if language is not set
+        if ($lang == null) {$lang = $this->tool->setSessionLang($this->tool->getBrowserLang());}
+        // render & return page to user
+        $out                = $this->out;
+        $this->lang->load($lang,$lang);
+        $this->load->view('v_header', 	$out);
+        $this->load->view('v_exam_tip', $out);
+        $this->load->view('v_footer',	$out);
 	}
 	/**
 	 * http://www.mysite.com/exam/next
@@ -73,7 +70,7 @@ class Exam extends CI_Controller
 	public function next ()
 	{
         // 1. check if 'exam_id' in session is set
-        if (!$this->sessionSet('exam_id'))
+        if (!$this->session->has_userdata('exam_id'))
         {
             redirect($this->out['ERROR']."/code/3");
         }
@@ -111,7 +108,10 @@ class Exam extends CI_Controller
                 if ($lang == null) {$lang = $this->tool->setSessionLang($this->tool->getBrowserLang());}
                 // render & return page to user
                 $out                = $this->out;
-                $out['duration']    = $this->tool->getExamDuration($exam['start_at'], date("Y-m-d H:i:s"));
+                $out['name']        = $exam['subject_name'];
+                $out['start_at']    = $exam['start_at'];
+                $out['finish_at']   = date("Y-m-d H:i:s");
+                $out['duration']    = $this->tool->getExamDuration($exam['start_at'], $out['finish_at']);
                 $this->lang->load($lang,$lang);
                 $this->load->view('v_header', 	$out);
                 $this->load->view('v_exam_done', $out);
@@ -181,6 +181,11 @@ class Exam extends CI_Controller
 	}
 
     /**
+     * ------------------------------------
+     *              METHODS
+     * ------------------------------------
+     */
+    /**
      * check if submitted answers are in a correct format
      * @param $in
      * @return bool
@@ -202,22 +207,6 @@ class Exam extends CI_Controller
             {
                 return false;
             }
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    /**
-     * check if 'exam_id' has been set in session
-     * @return bool
-     */
-    private function sessionSet ()
-    {
-        if ($this->session->has_userdata('exam_id'))
-        {
-             return true;
         }
         else
         {

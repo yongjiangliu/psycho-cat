@@ -82,7 +82,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </div>
         <div class="form-group">
           <div class="col-sm-offset-8 col-sm-10" id="submitDiv">
-            <button type="submit" class="btn btn-default">提交</button>
+            <button type="submit" class="btn btn-default"><?=$this->lang->line('form_continue')?></button>
           </div>
         </div>
         </form>

@@ -12,17 +12,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     $panelTitle;
     $disabled;
     $code;
+    $hidden;
     if ($resume_code != null)
     {
         $panelTitle = $this->lang->line('exam_ready');
         $disabled = "disabled";
         $code = $resume_code;
+        $hidden = "<input type='hidden' name='resume_code' value='".$resume_code."'>";
     }
     else
     {
         $panelTitle = $this->lang->line('exam_resume');
         $disabled = "";
         $code = "";
+        $hidden = "";
     }
 ?>
 <div class="container-fluid">
@@ -37,7 +40,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <?php
                         if ($errCode != -1)
                         {
-                            echo "<p class='bg-danger'><strong>".$this->lang->line("error_".$errCode)."</strong></p>";
+                            echo "<p class='text-danger'><strong>".$this->lang->line("error_".$errCode)."</strong></p>";
                             echo "<br>";
                         }
                         ?>
@@ -45,13 +48,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <label for="resume_code" class="col-sm-4 control-label pull-left"><?=$this->lang->line('resume_code')?></label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" id="resume_code" name="resume_code" <?=$disabled?> value="<?=$code?>" required>
+                                <?=$hidden?>
                             </div>
                             <div class="col-sm-2"></div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-5 pull-right">
                                 <br>
-                                <button type="submit" class="btn btn-default"><?=$this->lang->line('exam_start')?></button>
+                                <button type="submit" class="btn btn-default"><?=$this->lang->line('form_continue')?></button>
                             </div>
                         </div>
                     </form>

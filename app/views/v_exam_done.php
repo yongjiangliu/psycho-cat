@@ -18,7 +18,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="panel-body">
                         <form class="form-horizontal" method="GET" action="<?=$HOME?>">
                             <div class="form-group bg-default">
-                                <p><?=$this->lang->line("exam_time_used")?></p>
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <strong><?=$this->lang->line("subject_name")?>:</strong>
+                                    </div>
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                        <?=$name?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <strong><?=$this->lang->line("exam_start_at")?>:</strong>
+                                    </div>
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                        <?=$start_at?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <strong><?=$this->lang->line("exam_finish_at")?>:</strong>
+                                    </div>
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                        <?=$finish_at?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <strong><?=$this->lang->line("exam_duration")?>:</strong>
+                                    </div>
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                        <?=$duration?>
+                                    </div>
+                                </div>
+                            </div>
                                 <div class="form-group">
                                     <div class="col-sm-5 pull-right">
                                         <br>

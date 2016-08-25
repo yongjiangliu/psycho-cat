@@ -35,7 +35,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <?php
             if ($errCode != null)
             {
-              echo "<p class='bg-danger'><strong>".$this->lang->line("error_".$errCode)."</strong></p>";
+              echo "<p class='text-danger'><strong>".$this->lang->line("error_".$errCode)."</strong></p>";
             }
             else
             {

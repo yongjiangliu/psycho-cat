@@ -33,11 +33,15 @@ $lang['marriage_unmarried']         = '未婚';
 
 // Exam
 $lang['exam_resume']                = '恢复测试';
-$lang['exam_ready']                 = '准备开始测试';
+$lang['exam_ready']                 = '准备开始测试!';
 $lang['exam_start']                 = '开始';
-$lang['resume_code']                = '测试恢复代码';
+$lang['resume_code']                = '恢复代码';
 $lang['exam_done']                  = '测试完成';
-$lang['exam_time_used']             = '测试用时';
+$lang['exam_tip_title']             = '提示';
+$lang['exam_tip']                   = '你可以使用 <kbd>方向键</kbd> 来切换选项, 然后使用 <kbd>回车键</kbd> 提交答案';
+$lang['exam_start_at']              = '开始时间';
+$lang['exam_finish_at']             = '结束时间';
+$lang['exam_duration']              = '测试用时';
 
 // Questions
 $lang['question_type']              = '类型';
