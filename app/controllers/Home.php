@@ -46,11 +46,11 @@ class Home extends CI_Controller
 	public function form ($errCode = null)
 	{
 		// check session language
-		$lang = $this->getSessionLang();
+		$lang = $this->tool->getSessionLang();
         // use browser language if not set
 		if ($lang == null)
 		{
-			$lang = $this->setSessionLang($this->getBrowserLang());
+			$lang = $this->tool->setSessionLang($this->tool->getBrowserLang());
 		}
         // render & return page to user
 		$out            = $this->out;
@@ -72,9 +72,25 @@ class Home extends CI_Controller
 	{
         // NOTE: if you set a unsupported language, ex: 'ab' for `Abkhazian`,
         // the system will automatically reset it to 'en' for 'English'
-		$this->setSessionLang($langCode);
+		$this->tool->setSessionLang($langCode);
 		redirect($this->out['HOME'], 'refresh');
 	}
+
+    public function resume ($errCode = -1, $resume_code = null)
+    {
+        // check session language
+        $lang = $this->tool->getSessionLang();
+        // use browser language if not set
+        if ($lang == null) {$lang = $this->tool->setSessionLang($this->tool->getBrowserLang());}
+        // render & return page to user
+        $out                = $this->out;
+        $out['errCode']     = $errCode;
+        $out['resume_code'] = $resume_code;
+        $this->lang->load($lang,$lang);
+        $this->load->view('v_header', 	$out);
+        $this->load->view('v_home_code',$out);
+        $this->load->view('v_footer',	$out);
+    }
 
 	/**
      * check subject information
@@ -120,38 +136,21 @@ class Home extends CI_Controller
                 redirect($this->out['HOME']."/form/11");
             }
             // else get necessary arguments
-            $resume_code = $this->generateResumeCode();
+            $resume_code = $this->tool->generateResumeCode();
             $ip          = $this->input->ip_address();
-            $age         = $this->getAgeByBirthday($in['birthday']);
+            $age         = $this->tool->getAgeByBirthday($in['birthday']);
             // insert subject information to database
             $dbResult = $this->m_exams->add($in['name'], $in['occupation'], $in['gender'], $in['birthday'],$age, $in['education'],
                             $in['bloodType'], $in['marriage'], $resume_code, $ip, date("Y-m-d H:i:s"));
             // if insertion successful
             if ($dbResult)
             {
-                // get exam_id
-                $exam_record = $this->m_exams->getByResumeCodeAndName ($resume_code, $name);
-                if (count($exam_record) != 0)
-                {
-                    // set exam_id in session
-                    if (isset($exam_record['exam_id']))
-                    {
-                        // start exam
-                        $this->session->set_userdata('exam_id', $exam_record['exam_id']);
-                        echo "success";
-                        redirect($this->out['EXAM'], 'refresh');
-                    }
-                    else
-                    {
-                        // show database error if we can't get exam_id
-                        redirect($this->out['HOME']."/form/6");
-                    }
-                }
-                else
-                {
-                    // show database error if we can't get inserted exam record
-                    redirect($this->out['HOME']."/form/6");
-                }
+                // check session language
+                $lang = $this->tool->getSessionLang();
+                // use browser language if not set
+                if ($lang == null) {$lang = $this->tool->setSessionLang($this->tool->getBrowserLang());}
+                // render & return page to user
+                redirect($this->out['HOME']."/resume/-1/".$resume_code);
             }
             else
             {
@@ -165,114 +164,4 @@ class Home extends CI_Controller
             redirect($this->out['HOME']."/form/10");
         }
 	}
-
-    /**
-     * ------------------------------------
-     *              METHODS
-     * ------------------------------------
-     */
-	/**
-	 * get session language, return null if not set
-	 * @return langCode or null
-	 */
-	private function getSessionLang ()
-	{
-		if ($this->session->has_userdata('lang'))
-		{
-			return $this->session->userdata('lang');
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	/**
-	 * set session language
-	 * @param $langCode, language code to be set
-	 * @return string,   session language
-	 */
-	private function setSessionLang ($langCode)
-	{
-		if ($this->langSupported ($langCode))
-        {
-            // if we support this language, set session key 'lang' => 'langCode'
-            $this->session->set_userdata('lang', $langCode);
-            return $langCode;
-        }
-        else
-        {
-            // if we don't support this language, set session key 'lang' => 'en'
-            $this->session->set_userdata('lang', 'en');
-            return 'en';
-        }
-	}
-
-	/**
-	 * get language code from HTTP request header
-	 * @return string, language code
-	 */
-	private function getBrowserLang ()
-	{
-		return substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-	}
-
-	/**
-	 * check if we support this language
-     * to define a new supported language,
-     * go to ./app/language to add a new folder & files, then modify config['LANGS'] in ./app/libraries/Conf.php
-	 * @param $langCode, language code to be checked
-	 * @return boolean
-	 */
-	private function langSupported ($langCode)
-	{
-		$CONFIG = $this->conf->config;
-		$LANGS = $CONFIG['LANGS'];
-		foreach ($LANGS as $key => $val)
-		{
-			if ($key == $langCode)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-    /**
-     * generate a random & unique resume code
-     * @return resumeCode, a randomly generated 4 chars string
-     */
-    private function generateResumeCode ()
-    {
-        while(true)
-        {
-            $seed = str_split('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.'0123456789');
-            shuffle($seed);
-            $resumeCode = '';
-            foreach (array_rand($seed, 4) as $k)
-            {
-                $resumeCode .= $seed[$k];
-            }
-            if (!$this->m_exams->resumeCodeExists($resumeCode))
-            {
-                return $resumeCode;
-            }
-        }
-
-    }
-
-    /**
-     * get user age by birthday
-     * @param birthday, birthday submitted by user in format of YYYY-MM-DD, ex 1900-01-01
-     * @return age, calculated user age
-     */
-    private function getAgeByBirthday ($birthday)
-    {
-
-        $bday = new DateTime($birthday);
-        $today = new DateTime();
-        $diff = $today->diff($bday);
-        return $diff->y;
-    }
-
 }

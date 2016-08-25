@@ -25,7 +25,6 @@ class Exam extends CI_Controller
 		parent::__construct();
         $this->out = $this->conf->config;
 	}
-
 	/**
 	 * ------------------------------------
 	 *              ROUTES
@@ -33,379 +32,196 @@ class Exam extends CI_Controller
 	 */
 	/**
 	 *
-	 * @route http://www.mysite.com/exam
-	 */
-	public function index ()
-	{
-
-	}
-	/**
-	 *
 	 * @route http://www.mysite.com/home/form[/errCode]
 	 * @param errCode null error code is defined in ./app/libraries/Conf.php
 	 */
-	public function start ()
+	public function index ()
 	{
-        // get exam_id from session
-        $exam_id = $this->getSessionExamId();
-        if ($exam_id == null)
+		$in = $this->input->post(NULL, TRUE);
+        // exit & show error if field 'resume_code' is not set
+		if (!isset($in['resume_code']))
         {
-            // show 404
+            echo "resume code is not set";
+            //redirect($this->out['HOME']."/resume/12");
         }
-        // check if exam_id exists
-
-        // exists, set question_id
-
-        // show exam start conformation page
-
+        $resume_code = $in['resume_code'];
+        // exit & show error if field 'resume_code' not exists in database
+        if (!$this->m_exams->resumeCodeExists($resume_code))
+        {
+            echo "resume code does not exist in database";
+            //redirect($this->out['HOME']."/resume/12");
+        }
+        // get exam record
+        $recordArray = $this->m_exams->getByResumeCode($resume_code);
+        $record = $recordArray[0];
+        // exit & show message if the exam has been finished
+        if ($record['finished'] == 1)
+        {
+            //redirect($this->out['HOME']."/resume/2");
+        }
+        // passed checks, set session
+        $this->session->sess_destroy();
+        $this->session->set_userdata('exam_id', $record['exam_id']);
+        // redirect to 'next' to start answering questions
+        redirect($this->out['EXAM']."/next");
 	}
-
-
-	public function resume ()
-	{
-
-	}
-
-
-	// Default controller
-	public function index()
-	{
-		$test_code = $this->input->post("test_code",true);
-		$path = $this->path->get();
-		$record;
-		// if test code is null
-		if ($test_code == "" || $test_code == null){
-				// invalid test code
-				redirect($path['ERROR']."/code/0", 'refresh');
-		}
-		// if not null ,check it
-		else {
-			// trim it
-			$test_code = trim($test_code);
-			$record = $this->m_answer->getShort($test_code);
-			// can't get answer with that test_code, print error
-			if ($record == null)
-			{
-				// invalid test code
-				redirect($path['ERROR']."/code/0", 'refresh');
-			}
-			// got answer with that test_code, proceed
-			else
-			{
-				// if test is finished, print error
-				if ($record["finish_test"] == 1)
-				{
-					redirect($path['ERROR']."/code/1", 'refresh');
-				}
-				// if not, set session
-				else
-				{
-					// prepare session data
-					$count = $this->m_question->count("all");
-
-					$sessData = array(	"name" 			=> $record["name"],
-															"qid" 			=> $record["qid"],
-															"aid"  			=> $record["aid"],
-															"count" 		=> $count
-														);
-					// set session
-					$this->session->set_userdata($sessData);
-					// output jumper
-					$out 							= $this->path->get();
-					$out['name'] 			= $record["name"];
-					$out['birthday'] 	= $record["birthday"];
-					$out['count'] 		= $count;
-					$out['qid']				= $record['qid'];
-					$this->load->view('v_header',$out);
-					$this->load->view('v_jumper',$out);
-				}
-			}
-		}
-	}
-
 	/**
 	 * http://www.mysite.com/exam/next
 	 * show next question
 	 * @since v0.1.0
 	 */
-	public function next()
+	public function next ()
 	{
-		$path = $this->path->get();
-		// if pass session check
-		if ($this->sessCheck()){
-			// if there's answer and type field
-			$answer		= $this->input->post('answer');
-			$type 		= $this->input->post('type');
-			if ($answer != null && $type != null)
-			{
-				// if answer format is correct
-				if ($this->answerFormatCheck($type,$answer))
-				{
-					// then store answer
-					$aid = intval($this->session->userdata('aid'));
-					$qid = intval($this->session->userdata('qid'));
-					$append_result = $this->m_answer->append($aid,$answer,$qid,$type);
-					// if qid and database answer length doesn't match, throw error dismatch
-					if ($append_result == "DISMATCH")
-					{
-						redirect($path['ERROR']."/code/11", 'refresh');
-					}
-					// if append failed, throw database error
-					else if ($append_result == "FALSE")
-					{
-						redirect($path['ERROR']."/code/7", 'refresh');
-					}
-					// if append success,
-					else if ($append_result == "TRUE")
-					{
-						// get qid
-						$qid = intval($this->session->userdata('qid'));
-						// display next question
-						$this->displayQuestion($qid + 1);
-					}
-				}
-				else
-				{
-					// if answer format is not correct, throw answer format error
-					redirect($path['ERROR']."/code/8", 'refresh');
-				}
-			}
-			else
-			{
-				// get qid
-				$qid = intval($this->session->userdata('qid'));
-				// if field answer is not set, display question by $qid
-				$this->displayQuestion($qid);
-			}
-		}
-		else
-		{
-			// session expired, need to re-enter test code
-			redirect($path['ERROR']."/code/2", 'refresh');
-		}
-	}
-
-	/**
-	 * http://www.mysite.com/exam/done
-	 * called when exam finishes
-	 */
-	public function done()
-	{
-		$path = $this->path->get();
-		if ($this->sessCheck())
-		{
-			// get aid
-			$aid 		= intval($this->session->userdata('aid'));
-			$count	= $this->m_question->count("all");
-			// set finish time and finish flag in DB
-			$this->m_answer->finish($aid);
-			// destroy session so user can no longer answer any questions by URL
-			$this->session->sess_destroy();
-			$record			= $this->m_answer->get($aid);
-			if ($record == null)
-			{
-				redirect($path['ERROR']."/code/12", 'refresh');
-			}
-			$start_time 	=	$record['start_time'];
-			$finish_time 	= $record['finish_time'];
-			$name  				= $record['name'];
-			$qid 					= $record['qid'];
-			$test_code 		= $record['test_code'];
-
-			// calculate time difference (hour, minute, second)
-			$dteStart = new DateTime($start_time );
-			$dteEnd   = new DateTime($finish_time);
-			$dteDiff  = $dteStart->diff($dteEnd);
-			$time 		= $dteDiff->format("%H:%I:%S");
-
-			$out = $this->path->get();
-			$out['qid'] 				= $qid;
-			$out['count'] 			= $count;
-			$out['time']				= $time;
-			$out['start_time']	= $start_time;
-			$out['finish_time']	= $finish_time;
-			$out['name']				= $name;
-			$out['test_code']		= $test_code;
-
-			$this->load->view('v_header',$out);
-			$this->load->view('v_test_done',$out);
-			}
-			else
-			{
-				// session expired
-				redirect($path['ERROR']."/code/4", 'refresh');
-			}
-	}
-
-	private function displayQuestion($qid)
-	{
-		$path = $this->path->get();
-		$aid = intval($this->session->userdata('aid'));
-		// if answering first question, update start time
-		if ($qid == 1)
-		{
-			if (!$this->m_answer->start($aid))
-			{
-				// if store failed, throw a database error
-				redirect($path['ERROR']."/code/7", 'refresh');
-			}
-		}
-		//--------------------------------------------- fetch question
-		// get next question & option by feteching qid
-		$record = $this->m_question->get($qid);
-		// if $qid + 1 == count(all_questions) + 1, then test complete
-		if ($record == "MAX")
-		{
-			// redirect to Test Complete page
-			redirect($path['TEST']."/done", 'refresh');
-		}
-		// if target qid not exists and $qid + 1 != count(all_questions) + 1,
-		// then throw question can't be found error
-		else if ($record == null)
-		{
-			redirect($path['ERROR']."/code/10", 'refresh');
-		}
-		// if we get the question and test is not complet
-		else
-		{
-			// prepare for output
-			$db_options = array (
-								$record['option_1'],
-								$record['option_2'],
-								$record['option_3'],
-								$record['option_4'],
-								$record['option_5']);
-			$options = $this->optionFilter($db_options);
-			// set session, last_qid ++
-			//$this->session->set_userdata('last_qid', strval($last_qid++));
-			$this->session->set_userdata('qid', $qid);
-			// show page
-			$out = $this->path->get();
-			$out['qid'] 			= $record['qid'];
-			$out['question'] 	= $record['question'];
-			$out['type']			= $record['type'];
-			$out['options'] 	= $options;
-			// print user name and count
-			$out['name'] 			= $this->session->userdata('name');
-			$out['count'] 		= $this->session->userdata('count');
-			$this->load->view('v_header',$out);
-			$this->load->view('v_test',$out);
-		}
-	}
-
-	private function sessCheck()
-	{
-		$result = true;
-		if (!$this->session->has_userdata('name'))
-		{
-			$result = false;
-		}
-		if (!$this->session->has_userdata('qid'))
-		{
-			$result = false;
-		}
-		if (!$this->session->has_userdata('aid'))
-		{
-			$result = false;
-		}
-		if (!$this->session->has_userdata('count'))
-		{
-			$result = false;
-		}
-		return $result;
-	}
-
-	private function answerFormatCheck($type, $answer)
-	{
-		// if it's single choice question or judgement
-		if ($type == "jg")
-		{
-			switch ($answer)
-			{
-				case "是":
-						return true;
-				case "否":
-						return true;
-				case "不确定":
-						return true;
-				default:
-						return false;
-			}
-		}
-		else if ($type == "sc")
-		{
-			switch ($answer)
-			{
-				case "A":
-						return true;
-				case "B":
-						return true;
-				case "C":
-						return true;
-				case "D":
-						return true;
-				case "E":
-						return true;
-				default:
-						return false;
-			}
-		}
-		// multi choice question will be formatted as: "1,3,4"
-		// in case it's multi choice question, we first split the data by ','
-		// then check it like single choice questions
-		else if ($type == "mc")
-		{
-			$splitted = str_split($answer);
-			foreach ($splitted as $val)
-			{
-				switch ($val)
-				{
-					case "A":
-							break;
-					case "B":
-							break;
-					case "C":
-							break;
-					case "D":
-							break;
-					case "E":
-							break;
-					default:
-							return false;
-				}
-				return true;
-			}
-		}
-		else {
-			return false;
-		}
-	}
-	private function optionFilter($db_options)
-	{
-		$i = 0;
-		$options;
-		foreach($db_options as $val)
-		{
-			if ($val != "")
-			{
-				$options[$i] = $val;
-				$i++;
-			}
-		}
-		return $options;
-	}
-
-
-
-    private function getSessionExamId ()
-    {
-        if ($this->session->has_userdata('exam_id'))
+        // 1. check if 'exam_id' in session is set
+        if (!$this->sessionSet('exam_id'))
         {
-            return $this->session->userdata('exam_id');
+            redirect($this->out['ERROR']."/code/3");
+        }
+
+        // 2. check if 'exam_id' exists in database
+        $exam_id = $this->session->userdata('exam_id');
+        if (!$this->m_exams->idExists($exam_id))
+        {
+            redirect($this->out['ERROR']."/code/13");
+        }
+
+        // 3. try to fetch exam record
+        $result     = $this->m_exams->getById($exam_id);
+        $exam    = $result[0];
+
+        // 4. check if this exam has been finished
+        if ($exam['finished'] == 1)
+        {
+            redirect($this->out['ERROR']."/code/2");
+        }
+
+        // 5. check if current question id > total question count, if so, finish the test
+        $question_id  = intval($exam['question_id']);
+        $question_num = $this->m_questions->countAll();
+        if (($question_id + 1) > $question_num)
+        {
+            if ($this->m_exams->finishExam($exam_id))
+            {
+                // flush session
+                $this->session->sess_destroy();
+                // output exam finishing confirmation page
+                // check session language
+                $lang = $this->tool->getSessionLang();
+                // use browser language if language is not set
+                if ($lang == null) {$lang = $this->tool->setSessionLang($this->tool->getBrowserLang());}
+                // render & return page to user
+                $out                = $this->out;
+                $out['duration']    = $this->tool->getExamDuration($exam['start_at'], date("Y-m-d H:i:s"));
+                $this->lang->load($lang,$lang);
+                $this->load->view('v_header', 	$out);
+                $this->load->view('v_exam_done', $out);
+                $this->load->view('v_footer',	$out);
+                return;
+            }
+            else
+            {
+                // show database error if can't set 'finished' = 1
+                redirect($this->out['ERROR']."/code/6");
+            }
+        }
+        // if question_id == 1, set exam start time
+        else if ($question_id == 1)
+        {
+            if (!$this->m_exams->setStartTime($exam_id))
+            {
+                // show database error if can't set 'exam_start' = current DateTime
+                redirect($this->out['ERROR']."/code/6");
+            }
+        }
+
+        // 6. check if user submits any answers, if yes, check its format & store
+        $in = $this->input->post(NULL, TRUE);
+        if ($this->answerFormatCorrect($in))
+        {
+            if (!$this->m_exams->appendAnswer($exam_id, $in['answer']))
+            {
+                // if we failed to append the new answer, show 'database error'
+                redirect($this->out['ERROR']."/code/6");
+            }
+            else
+            {
+                // if we appended the answer, increase question_id by 1
+                $question_id ++;
+                if (!$this->m_exams->setQuestionId($exam_id, $question_id))
+                {
+                    redirect($this->out['ERROR']."/code/6");
+                }
+            }
+        }
+
+        // 7. check if target question exists
+        if (!$this->m_questions->idExists($question_id))
+        {
+            redirect($this->out['ERROR']."/code/9");
+        }
+
+        // 8. fetch target question
+        $result   = $this->m_questions->getById($question_id);
+        $question = $result[0];
+
+        // 9. output
+        // check session language
+        $lang = $this->tool->getSessionLang();
+        // use browser language if language is not set
+        if ($lang == null) {$lang = $this->tool->setSessionLang($this->tool->getBrowserLang());}
+        // render & return page to user
+        $out                = $this->out;
+        $question['count']  = $question_num;
+        $out['question']    = $question;
+        $out['exam']        = $exam;
+        $this->lang->load($lang,$lang);
+        $this->load->view('v_header', 	$out);
+        $this->load->view('v_exam', $out);
+        $this->load->view('v_footer',	$out);
+	}
+
+    /**
+     * check if submitted answers are in a correct format
+     * @param $in
+     * @return bool
+     */
+    private function answerFormatCorrect ($in)
+    {
+        if (isset($in['answer']) && isset($in['type']))
+        {
+            $regexArray     = $this->out['REGEX'];
+            $regex          = $regexArray['question_form'];
+            $answer         = $in['answer'];
+            $type           = $in['type'];
+
+            if (preg_match($regex[$type], $answer))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {
-            return null;
+            return false;
+        }
+    }
+
+    /**
+     * check if 'exam_id' has been set in session
+     * @return bool
+     */
+    private function sessionSet ()
+    {
+        if ($this->session->has_userdata('exam_id'))
+        {
+             return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

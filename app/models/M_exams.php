@@ -394,7 +394,7 @@ class M_exams extends CI_Model {
    * append a new answer to 'answer_array', delimiter of each answer is ' '
    * @since v0.1.0
    * @param $exam_id,   which exam to add the answer to
-   * @param $new_answer, answer to be added
+   * @param $answer, answer to be added
    * @return bool
    */
   public function appendAnswer ($exam_id, $answer)
@@ -426,7 +426,7 @@ class M_exams extends CI_Model {
    * @param $start_at,  exam start time (datetime)
    * @return bool
    */
-  public function setStartTime ($exam_id, $start_at)
+  public function setStartTime ($exam_id)
   {
     if (!$this->idExists($exam_id))
     {
@@ -434,7 +434,7 @@ class M_exams extends CI_Model {
     }
     else
     {
-      $this->db->set('start_at', $start_at);
+      $this->db->set('start_at', date("Y-m-d H:i:s"));
       $this->db->where('exam_id', $exam_id);
       return $this->db->update($this->table);
     }
@@ -477,9 +477,36 @@ class M_exams extends CI_Model {
     {
       $this->db->set('finished', 1);
       $this->db->where('exam_id', $exam_id);
-      return $this->db->update($this->table);
+      if ($this->db->update($this->table))
+      {
+          return $this->setFinishTime ($exam_id, date("Y-m-d H:i:s"));
+      }
+      else
+      {
+          return false;
+      }
     }
   }
+
+    /**
+     * update question_id
+     * @param $exam_id
+     * @param $question_id
+     * @return bool
+     */
+    public function setQuestionId ($exam_id, $question_id)
+    {
+        if (!$this->idExists($exam_id))
+        {
+            return false;
+        }
+        else
+        {
+            $this->db->set('question_id', $question_id);
+            $this->db->where('exam_id', $exam_id);
+            return $this->db->update($this->table);
+        }
+    }
 
     //-----------
     //    DELETE

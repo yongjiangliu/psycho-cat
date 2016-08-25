@@ -4,11 +4,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="<?=$ADMIN?>"><?=$this->lang->line("nav_admin_login")?></a></li>
-            <li><a href="<?=$HOME?>/enterResumeCode"><?=$this->lang->line("nav_resume_exam")?></a></li>
+            <li><a href="<?=$HOME?>/resume"><?=$this->lang->line("nav_resume_exam")?></a></li>
           </ul>
           <ul id="nav-images" class="nav navbar-nav navbar-right">
             <li>
-              <a href="https://github.com/bclicn/PsychoCat">
+              <a href="https://github.com/bclicn/PsychoCat" target="_blank">
                 <img title="<?=$this->lang->line("nav_github")?>" src="<?=$IMG?>/github.png">
               </a>
             </li>
@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               </ul>
             </li>
           </ul>
-        </div><!--/.nav-collapse -->
+        </div>
       </div>
     </nav>
 

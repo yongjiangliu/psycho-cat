@@ -11,26 +11,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="container-fluid" style="min-height:300px;">
         <div class="row">
             <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-                <div id="error-message-panel" class="panel panel-danger">
+                <div id="exam-done-panel" class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><?=$this->lang->line("error")?></h3>
+                        <h3 class="panel-title"><?=$this->lang->line("exam_done")?></h3>
                     </div>
                     <div class="panel-body">
-                        <form class="form-horizontal">
-                            <div id="warning" class="form-group bg-default">
-                                <?php
-                                    $errMsg = $this->lang->line("error_".$errCode);
-                                    if ($errMsg == "" || $errMsg == null)
-                                    {
-                                        $errMsg = $this->lang->line("error_0");
-                                    }
-                                ?>
-                                <p><?=$errMsg?></p>
+                        <form class="form-horizontal" method="GET" action="<?=$HOME?>">
+                            <div class="form-group bg-default">
+                                <p><?=$this->lang->line("exam_time_used")?></p>
                                 <div class="form-group">
                                     <div class="col-sm-5 pull-right">
                                         <br>
-                                        <button type="button" class="btn btn-default" onclick="goBack()"><?=$this->lang->line("form_back")?></button>
-                                        <script>function goBack() {window.history.back();}</script>
+                                        <button type="submit" class="btn btn-default"><?=$this->lang->line("nav_home")?></button>
                                     </div>
                                 </div>
                             </div>

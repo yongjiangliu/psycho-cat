@@ -25,9 +25,11 @@ class Conf {
 
 		// Controllers
 		$this->config['HOME']          = site_url().'/home';
-		$this->config['TEST']          = site_url().'/test';
+		$this->config['EXAM']		   = site_url().'/exam';
 		$this->config['ADMIN']         = site_url().'/admin';
-		$this->config['ERROR']         = site_url().'/error';
+		$this->config['ERROR']         = site_url().'/err';
+		$this->config['TEST']          = site_url().'/test';
+
 
 		// Title
 		$this->config['APP_NAME']	   = "PsychoCat";
@@ -54,9 +56,13 @@ class Conf {
                                                                 'bloodType'     => '/^(A|B|AB|O)$/',
                                                                 'marriage'      => '/^[0-1]{1}$/'
 																),
-											'resume_code' => array (
-
-																),
+											'resume_code' => '/^(A-Z0-9){4}$/',
+											'question_form' => array (
+																'jd'	=> '/^(0|1)$/',
+																'sc'	=> '/^[0-9]{1}$/',
+																'mc'	=> '/^[0-9]{1,9}$/',
+																'type'  => '/^(jd|sc|md)$/'
+											)
 									);
 
 	}
