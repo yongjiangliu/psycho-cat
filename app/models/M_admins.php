@@ -214,7 +214,6 @@ class M_admins extends CI_Model {
             return $this->db->update($this->table, $data);
         }
     }
-
     /**
      * update login information (last_login_ip, last_login_time)
      * @since v0.1.0
@@ -263,7 +262,6 @@ class M_admins extends CI_Model {
         else
         {
             $this->db->where('admin_id', $admin_id);
-            //TODO: log this event
             return $this->db->delete($this->table);
         }
     }

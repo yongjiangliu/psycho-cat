@@ -38,10 +38,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <div class="panel-body">
                     <form class="form-horizontal" method="post" action="<?=$EXAM?>">
                         <?php
-                        if ($errCode != -1)
+                        $errMsg = $this->lang->line("error_".$errCode);
+                        if ($errMsg != "" && $errMsg != null)
                         {
-                            echo "<p class='text-danger'><strong>".$this->lang->line("error_".$errCode)."</strong></p>";
-                            echo "<br>";
+                            echo '<div class="alert alert-danger" role="alert">';
+                            echo '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>';
+                            echo '<span class="sr-only">Error</span>';
+                            echo '&nbsp;&nbsp;';
+                            echo  $errMsg;
+                            echo "</div>";
+                        }
+                        else
+                        {
+                            echo "";
                         }
                         ?>
                         <div class="form-group">

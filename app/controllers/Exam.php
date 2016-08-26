@@ -3,18 +3,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Class Exam
- * controller of exam, including question system and resume code submission
+ * controller of exam, which includes exam session creation and answer submission
+ * the detailed steps for answering questions
+ * 1. user provides a resume code
+ * 2. system checks whether this resume code is in database
+ * 3. if in db, then has this test been finished ?
+ * 4. if not finished, start test from stored question_id
+ * 5. questions will be answered in order, no previous questions can be modified
+ * 6. finish the test when question_id > question count
+ *
+ * @since v0.1.0
  * @author bcli, 2016-8-9
  */
-
 class Exam extends CI_Controller
 {
-	private $out;
-	// Constructor
+	private $out;   // config array
 	public function __construct()
 	{
 		parent::__construct();
-        $this->out = $this->conf->config;
+        $this->out = $this->conf->config;   // set config array in constructor
 	}
 	/**
 	 * ------------------------------------
@@ -22,109 +29,128 @@ class Exam extends CI_Controller
 	 * ------------------------------------
 	 */
 	/**
-	 *
+	 * default controller of exam, used to check given resume code and set exam session,
+     * here, the 'exam session' means key value pair 'exam_id' in cookie,
+     * session string will be encrypted and sent to browser, then sent back later on.
+     * After that it can be decrypted, checked, modified, then encrypted & sent again.
 	 * @route http://www.mysite.com/exam/
-	 * @param errCode null error code is defined in ./app/libraries/Conf.php
+	 * @param errCode, error code which corresponding to a error message, see ./app/language/ for more
 	 */
 	public function index ()
 	{
+        // [1]  XSS filter to prevent SQL injection attack
 		$in = $this->input->post(NULL, TRUE);
-        // exit & show error if field 'resume_code' is not set
+
+        // [2] Have we got all fields we want ?
 		if (!isset($in['resume_code']))
         {
-            redirect($this->out['HOME']."/resume/12");
+            // NO, redirect to resume code submission page and print error 'form submission failed'
+            $this->tool->re('home/resume/10');
         }
+            // YES, continue to next step...
+
+        // [3] Does resume_code exist (belongs to any test) in database ?
         $resume_code = $in['resume_code'];
-        // exit & show error if field 'resume_code' not exists in database
         if (!$this->m_exams->resumeCodeExists($resume_code))
         {
-            redirect($this->out['HOME']."/resume/12");
+            // NO, redirect to resume code submission page and print error 'invalid resume code'
+            $this->tool->re('home/resume/12');
         }
-        // get exam record
-        $recordArray = $this->m_exams->getByResumeCode($resume_code);
-        $record = $recordArray[0];
-        // exit & show message if the exam has been finished
+            // YES, continue to next step...
+
+        // [4] Has this test been finished ?
+        $result = $this->m_exams->getByResumeCode($resume_code);
+        $record = $result[0];
         if ($record['finished'] == 1)
         {
-            redirect($this->out['HOME']."/resume/2");
+            // YES, since we can't resume a finished test, redirect to resume code submission
+            // page and print error 'can't resume a finished test'
+            $this->tool->re('home/resume/2');
         }
-        // passed checks, set session
+            // NO, continue to next step...
+
+        // [5] Set exam session by setting 'exam_id', which is the PK of each test record
         $this->session->set_userdata('exam_id', $record['exam_id']);
-        // output exam starting guide page
-        // check session language
-        $lang = $this->tool->getSessionLang();
-        // use browser language if language is not set
-        if ($lang == null) {$lang = $this->tool->setSessionLang($this->tool->getBrowserLang());}
-        // render & return page to user
-        $out                = $this->out;
-        $this->lang->load($lang,$lang);
-        $this->load->view('v_header', 	$out);
-        $this->load->view('v_exam_tip', $out);
-        $this->load->view('v_footer',	$out);
+
+        // [6] Render & output page
+        $this->tool->render('exam_tip');
 	}
 	/**
+     * [IMPORTANT] show next question, this sub-controller is the MOST IMPORTANT CONTROLLER of PsychoCat
+     * it fetch question by a stored question_id, then do question_id ++,
+     * when it finds out question_d > question count, set the 'finished' flag to 1 and output a finish page
 	 * http://www.mysite.com/exam/next
-	 * show next question
 	 * @since v0.1.0
 	 */
 	public function next ()
 	{
-        // 1. check if 'exam_id' in session is set
+        // [1]  Do we have 'exam_id' set in session ?
         if (!$this->session->has_userdata('exam_id'))
         {
-            redirect($this->out['ERROR']."/code/3");
+            // NO, redirect to error page with 'session expired'
+            $this->tool->re('err/code/3');
         }
+            // YES, continue to next step...
 
-        // 2. check if 'exam_id' exists in database
+        // [2]  Does 'exam_id' exist in database ?
         $exam_id = $this->session->userdata('exam_id');
         if (!$this->m_exams->idExists($exam_id))
         {
-            redirect($this->out['ERROR']."/code/13");
+            // NO, redirect to error page with 'can't find this test'
+            $this->tool->re('err/code/13');
         }
+            // YES, continue to next step...
 
-        // 3. try to fetch exam record
+        // [3]  Can we fetch the test record by this 'exam_id' ?
         $result     = $this->m_exams->getById($exam_id);
-        $exam    = $result[0];
+        if ($result == null || !isset($result[0]))
+        {
+            // NO, redirect to error page with 'database error'
+            $this->tool->re('err/code/10');
+        }
+        // YES, then store it to a var
+        $exam       = $result[0];
 
-        // 4. check if this exam has been finished
+        // [4]  Has this test been finished ?
         if ($exam['finished'] == 1)
         {
-            redirect($this->out['ERROR']."/code/2");
+            // YES, redirect to error page with 'can't answer a test which has been finished'
+            $this->tool->re('err/code/2');
         }
+            // NO, continue to next step...
 
-        // 5. check if current question id > total question count, if so, finish the test
+        // [5]  Have we reached the maximum question_id ?
         $question_id  = intval($exam['question_id']);
         $question_num = $this->m_questions->countAll();
         if (($question_id + 1) > $question_num)
         {
+            // YES, then finish the test
+
+            // [5.1]  Can we set the 'finished' flag to 1 ?
             if ($this->m_exams->finishExam($exam_id))
             {
-                // flush session
+                // YES, flush session
                 $this->session->sess_destroy();
-                // output exam finishing confirmation page
-                // check session language
-                $lang = $this->tool->getSessionLang();
-                // use browser language if language is not set
-                if ($lang == null) {$lang = $this->tool->setSessionLang($this->tool->getBrowserLang());}
-                // render & return page to user
-                $out                = $this->out;
-                $out['name']        = $exam['subject_name'];
-                $out['start_at']    = $exam['start_at'];
-                $out['finish_at']   = date("Y-m-d H:i:s");
-                $out['duration']    = $this->tool->getExamDuration($exam['start_at'], $out['finish_at']);
-                $this->lang->load($lang,$lang);
-                $this->load->view('v_header', 	$out);
-                $this->load->view('v_exam_done', $out);
-                $this->load->view('v_footer',	$out);
+                // show test finish confirmation page
+                $finish_at = date("Y-m-d H:i:s");
+                $data   = array (
+                                    'name'      => $exam['subject_name'],
+                                    'start_at'  => $exam['start_at'],
+                                    'finish_at' => $finish_at,
+                                    'duration'  => $this->tool->getExamDuration($exam['start_at'], $finish_at)
+                );
+                $this->tool->render('exam_done', $data);
+                // make sure to return so we won't execute the rest of this script
                 return;
             }
             else
             {
-                // show database error if can't set 'finished' = 1
-                redirect($this->out['ERROR']."/code/6");
+                // NO, redirect to error page with 'database error'
+                $this->tool->re('err/code/10');
             }
         }
-        // if question_id == 1, set exam start time
+
+        // [6]  Is the test just get started ?
         else if ($question_id == 1)
         {
             if (!$this->m_exams->setStartTime($exam_id))
@@ -134,9 +160,9 @@ class Exam extends CI_Controller
             }
         }
 
-        // 6. check if user submits any answers, if yes, check its format & store
+        // [7]  Does user submit any answers ?
         $in = $this->input->post(NULL, TRUE);
-        if ($this->answerFormatCorrect($in))
+        if ($this->tool->answerFormatCorrect($in))
         {
             if (!$this->m_exams->appendAnswer($exam_id, $in['answer']))
             {
@@ -154,63 +180,22 @@ class Exam extends CI_Controller
             }
         }
 
-        // 7. check if target question exists
+        // [8]  Does the target question exit ?
         if (!$this->m_questions->idExists($question_id))
         {
-            redirect($this->out['ERROR']."/code/9");
+            $this->tool->re('error/code/9');
         }
 
-        // 8. fetch target question
+        // [9] fetch target question
         $result   = $this->m_questions->getById($question_id);
         $question = $result[0];
 
-        // 9. output
-        // check session language
-        $lang = $this->tool->getSessionLang();
-        // use browser language if language is not set
-        if ($lang == null) {$lang = $this->tool->setSessionLang($this->tool->getBrowserLang());}
-        // render & return page to user
-        $out                = $this->out;
-        $question['count']  = $question_num;
-        $out['question']    = $question;
-        $out['exam']        = $exam;
-        $this->lang->load($lang,$lang);
-        $this->load->view('v_header', 	$out);
-        $this->load->view('v_exam', $out);
-        $this->load->view('v_footer',	$out);
+        // [10] render page
+        $data = array (
+                        'count'     => $question_num,
+                        'question'  => $question,
+                        'exam'      => $exam
+        );
+        $this->tool->render('v_exam', $data);
 	}
-
-    /**
-     * ------------------------------------
-     *              METHODS
-     * ------------------------------------
-     */
-    /**
-     * check if submitted answers are in a correct format
-     * @param $in
-     * @return bool
-     */
-    private function answerFormatCorrect ($in)
-    {
-        if (isset($in['answer']) && isset($in['type']))
-        {
-            $regexArray     = $this->out['REGEX'];
-            $regex          = $regexArray['question_form'];
-            $answer         = $in['answer'];
-            $type           = $in['type'];
-
-            if (preg_match($regex[$type], $answer))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
-            return false;
-        }
-    }
 }

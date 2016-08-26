@@ -20,6 +20,7 @@ $lang['form_submit']                = '提交';
 $lang['form_continue']              = '继续';
 $lang['form_next']                  = '下一个';
 $lang['form_back']                  = '返回';
+$lang['form_captcha']               = '验证码';
 $lang['gender_male']                = '男';
 $lang['gender_female']              = '女';
 $lang['education_grade_school']     = '小学';
@@ -50,7 +51,6 @@ $lang['question_type_sc']           = '单选';
 $lang['question_type_mc']           = '多选';
 $lang['question_progress']          = '进度';
 
-
 // Errors
 $lang['error']                      = '错误';
 $lang['error_0']                    = '未知错误类型';
@@ -67,4 +67,6 @@ $lang['error_10']                   = '表单提交错误';
 $lang['error_11']                   = '姓名已存在';
 $lang['error_12']                   = '无效的测试恢复代码';
 $lang['error_13']                   = '找不到该试卷';
+$lang['error_14']                   = '错误的用户名或密码';
+$lang['error_15']                   = '验证码错误';
 ?>

@@ -23,7 +23,7 @@ class Err extends CI_Controller
      */
 	public function index()
 	{
-		redirect($this->out['ERROR']."/code/0");
+		$this->tool->re('err/code/0');
 	}
 
     /**
@@ -33,16 +33,7 @@ class Err extends CI_Controller
      */
 	public function code($errCode = 0)
 	{
-		// check session language
-		$lang = $this->tool->getSessionLang();
-		// use browser language if not set
-		if ($lang == null) {$lang = $this->tool->setSessionLang($this->tool->getBrowserLang());}
-		// render & return page to user
-		$out                = $this->out;
-		$out['errCode']     = $errCode;
-		$this->lang->load($lang,$lang);
-		$this->load->view('v_header', 	$out);
-		$this->load->view('v_error',	$out);
-		$this->load->view('v_footer',	$out);
+        $data = array ('errCode' => $errCode);
+        $this->tool->render('error', $data);
 	}
 }

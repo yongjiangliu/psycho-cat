@@ -8,11 +8,13 @@
  */
 class Tool
 {
-    private $CI;
+    private $CI;    // CodeIgniter instance
+    private $out;
 
     public function __construct()
     {
         $this->CI =& get_instance();
+        $this->out = $this->CI->conf->config;
     }
 
     /**
@@ -75,7 +77,7 @@ class Tool
      */
     public function langSupported ($langCode)
     {
-        $CONFIG = $this->CI->conf->config;
+        $CONFIG = $this->out;
         $LANGS = $CONFIG['LANGS'];
         foreach ($LANGS as $key => $val)
         {
@@ -165,5 +167,151 @@ class Tool
             $output = $year." y ".$output;
         }
         return $output;
+    }
+
+    /**
+     * create a new captcha
+     * @param $ip, user IP address
+     * @return string $imageURL
+     */
+    public function createCaptcha ()
+    {
+        $ip = $this->CI->input->ip_address();
+        $vals = array(
+            'img_path'      => './res/captcha/',
+            'img_url'       => $this->CI->conf->config['CAPTCHA'],
+            'img_width'     => 150,
+            'img_height'    => 30,
+            'expiration'    => $this->CI->conf->config['CAPTCHA_TTL'],
+            'word_length'   => 4,
+            'font_size'     => 16,
+            'pool'          => '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            'colors'        => array(
+                'background'    => array(255, 255, 255),
+                'border'        => array(255, 255, 255),
+                'text'          => array(0, 0, 0),
+                'grid'          => array(238, 160, 23)
+            )
+        );
+        $cap = create_captcha($vals);
+        $data = array(
+            'captcha_time'  => $cap['time'],
+            'ip_address'    => $ip,
+            'word'          => $cap['word']
+        );
+        $query = $this->CI->db->insert_string('captcha', $data);
+        $this->CI->db->query($query);
+        return $cap['image'];
+    }
+
+    /**
+     * check if a given captcha is correct
+     * @param $captcha, captcha which user submitted
+     * @param $ip, user IP address
+     * @return bool
+     */
+    public function captchaCorrect ($captcha)
+    {
+        $ip = $this->CI->input->ip_address();
+        $expiration = time() - $this->out['CAPTCHA_TTL'];
+        $this->renewCaptcha();
+        $sql = 'SELECT COUNT(*) AS count FROM captcha WHERE word = ? AND ip_address = ? AND captcha_time > ?';
+        $binds = array(strtoupper($captcha), $ip, $expiration);
+        $query = $this->CI->db->query($sql, $binds);
+        $row = $query->row();
+        if ($row->count == 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public function renewCaptcha ()
+    {
+        $expiration = time() - $this->out['CAPTCHA_TTL'];
+        $this->CI->db->select('captcha_time');
+        $this->CI->db->where('captcha_time < ', $expiration);
+        $query = $this->CI->db->get('captcha');
+        $tsArray = $query->result_array();
+        
+        foreach ($tsArray as $key => $val)
+        {
+            $mask = './res/captcha/'.$val['captcha_time'].'*.jpg';
+            array_map( "unlink", glob($mask) );
+        }
+        $this->CI->db->where('captcha_time < ' ,$expiration);
+        $this->CI->db->delete('captcha');
+    }
+
+    public function setLang()
+    {
+        // try to get language from session
+        $lang = $this->getSessionLang();
+        // use browser language if not set
+        if ($lang == null)
+        {
+            $lang = $this->setSessionLang($this->getBrowserLang());
+        }
+        // set output language
+        $this->CI->lang->load($lang, $lang);
+    }
+
+    public function render($view, $extra_data = null, $useCaptcha = false)
+    {
+        $this->setLang();
+        $out                = $this->out;
+        if ($extra_data != null)
+        {
+            foreach ($extra_data as $key => $val)
+            {
+                $out[$key] = $val;
+            }
+        }
+        if ($useCaptcha)
+        {
+            $this->renewCaptcha();
+            $out['captcha'] = $this->createCaptcha();
+        }
+        $this->CI->load->view('v_header', 	$out);
+        $this->CI->load->view('v_'.$view,        $out);
+        $this->CI->load->view('v_footer',	$out);
+    }
+
+    public function re ($uri)
+    {
+        redirect($this->out['SITE'].$uri);
+    }
+
+
+    /**
+     * check if submitted answers are in a correct format
+     * @param $in
+     * @return bool
+     */
+    public function answerFormatCorrect ($in)
+    {
+        if (isset($in['answer']) && isset($in['type']))
+        {
+            $regexArray     = $this->out['REGEX'];
+            $regex          = $regexArray['question_form'];
+            $answer         = $in['answer'];
+            $type           = $in['type'];
+
+            if (preg_match($regex[$type], $answer))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 }

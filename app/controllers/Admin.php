@@ -3,43 +3,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Class Admin
- * controller of administrator login & management
+ * controller of administrator login & data management
  * @author bcli, 2016-8-9
  */
 
 class Admin extends CI_Controller
 {
-	private $out;
-	// Constructor
+	private $out;   //
+
 	public function __construct()
 	{
 		parent::__construct();
-		$this->out = $this->conf->path;
+		$this->out = $this->conf->config;
 	}
 
-	// Default controller, admin login
+    /**
+     * Default route of admin controller
+     * @route http://www.mysite.com/admin
+     */
 	public function index()
 	{
-		$controller = $this->out;
+        // is admin session set ? (is user already logged in as admin?)
 		if ($this->sessCheck()){
-			redirect($controller['ADMIN']."/panel/answer/get/all", 'refresh');
+            // YES, redirect to panel
+            $this->tool->re('admin/panel/answer/get/all');
 		}
-		else {
-			redirect($controller['ADMIN']."/login", 'refresh');
+		else
+        {
+            // NO, redirect to login page
+			$this->tool->re('admin/login');
 		}
 	}
-
-	public function login($status="")
+    
+	/**
+     * Administrator login
+	 * @route http://www.mysite.com/admin/login[/errCode]
+	 * @param int $errCode
+	 */
+	public function login($errCode = -1)
 	{
-		$out = $this->out;
-		if ($status == "failed"){
-			$out['status'] = false;
-		}
-		else {
-			$out['status'] = true;
-		}
-		$this->load->view('v_header', $out);
-		$this->load->view('v_admin_login',$out);
+        $data = array ('errCode' => $errCode);
+        $this->tool->render('admin_login', $data, true);
 	}
 
 	public function database($cmd="", $val="")
@@ -119,33 +123,60 @@ class Admin extends CI_Controller
 		}
 	}
 
-	// check username/password and issue session
+    /**
+     * check if admin username & password pair are correct
+     */
 	public function check()
 	{
-		$path = $this->out;
-		$username = $this->input->post("username");
-		$password = $this->input->post("password");
-		if ($this->m_admin->get($username,$password) != null){
-			$this->session->set_userdata('admin', 'Ane_89M-2kn');
-			redirect($path['ADMIN']."/panel/answer/get/all", 'refresh');
-		}
-		else {
-			// we have to do something against brute force
-			$failedTimes = 1;
-			if ($this->session->has_userdata("brute")){
-				$failedTimes = intval($this->session->userdata('brute')) + 1;
-				$this->session->set_userdata("brute", strval($failedTimes));
-			}
-			else {
-				$this->session->set_userdata('brute', '1');
-			}
-			if ($failedTimes >= 15){
-				redirect($path['ERROR']."/code/5", 'refresh');
-			}
-			else {
-				redirect($path['ADMIN']."/login/failed", 'refresh');
-			}
-		}
+        // define local variables
+        $user       = '';
+        $pass       = '';
+        $captcha    = '';
+        $ip         = '';
+        // [1]  XSS filter POST data, CI will show a '500 internal server error'
+        //      if it detects a SQL injection string
+        $in = $this->input->post(NULL, TRUE);
+
+        // [2] Are fields 'username', 'password' and 'captcha' defined in POST data ?
+        if (!isset($in['username']) || !isset($in['password']) || !isset($in['captcha']))
+        {
+            // NO, redirect to admin login page with error 'form submission failed'
+            redirect($this->out['ADMIN']."/login/10");
+        }
+        else
+        {
+            // YES, get data from POST
+            $user       = trim($in['username']);
+            $pass       = trim($in['password']);
+            $captcha    = trim($in['captcha']);
+            $ip         = $this->input->ip_address();
+        }
+
+        // [3]  Is the submitted captcha correct ?
+        //      All valid captcha are stored in database, each captcha is corresponding to an IP
+        if (!$this->tool->captchaCorrect($captcha, $ip))
+        {
+            // NO, redirect to admin login page with error 'invalid captcha'
+            redirect($this->out['ADMIN']."/login/15");
+        }
+            // YES, continue
+
+        // [4]  Is username & password pair exists in database ?
+        if (!$this->m_admins->userPassPairExists($user,$pass))
+        {
+            // NO, consider user login failed,
+            // redirect to admin login page with error 'invalid username or password'
+            redirect($this->out['ADMIN']."/login/14");
+        }
+        else
+        {
+            // YES, consider user has logged in, set session data and redirect to admin panel
+            // NOTE: the admin panel CAN ONLY BE ACCESSED WITH A VALID SESSION
+            //       which means the user must provide a encrypted
+            //       cookie string in HTTP header which contains 'admin' = 'Ane_89M-2kn'
+            $this->session->set_userdata('admin', 'Ane_89M-2kn');
+            redirect($this->out['ADMIN']."/panel/answer/get/all");
+        }
 	}
 
 	// show different admin panels
@@ -229,7 +260,7 @@ class Admin extends CI_Controller
 						}
 						else if ($cmd == "")
 						{
-							redirect($path['ADMIN']."/panel/question/get/all", 'refresh');
+							redirect($path['ADMIN']."/panel/question/get/all");
 							break;
 						}
 						else
@@ -258,14 +289,14 @@ class Admin extends CI_Controller
 							break;
 						}
 				case "":
-						redirect($path['ADMIN']."/panel/answer/get/all", 'refresh');
+						redirect($path['ADMIN']."/panel/answer/get/all");
 				default:
 						show_404();
 						break;
 			}
 		}
 		else {
-			redirect($path['ERROR']."/code/4", 'refresh');
+			redirect($path['ERROR']."/code/4");
 		}
 	}
 
@@ -286,7 +317,7 @@ class Admin extends CI_Controller
 			{
 				// if error detected, send error to upload page
 				$error = $this->upload->display_errors("","");
-				redirect($path['ADMIN']."/panel/upload/print/error/".$error, 'refresh');
+				redirect($path['ADMIN']."/panel/upload/print/error/".$error);
 			}
 			else
 			{
@@ -309,7 +340,7 @@ class Admin extends CI_Controller
 			}
 		}
 		else {
-			redirect($path['ERROR']."/code/4", 'refresh');
+			redirect($path['ERROR']."/code/4");
 		}
 	}
 

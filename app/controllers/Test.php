@@ -396,4 +396,11 @@ class Test extends CI_Controller
         $bool = $this->m_exams->truncate ();
         var_dump($bool);
     }
+
+    public function removeCap()
+    {
+        $exp = time() - $this->conf->config['CAPTCHA_TTL'];
+        echo $exp;
+        $this->tool->removeOldCaptcha($exp);
+    }
 }

@@ -1,7 +1,8 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * HTML compression hook
- * @author bcli, 2016-8-12
+ * minify HTML output to save bandwidth
+ * @author B.C. Institute of Technology
  * @see https://github.com/bcit-ci/codeigniter/wiki/compress-html-output
  */
 function compress()
@@ -11,7 +12,7 @@ function compress()
     $buffer = $CI->output->get_output();
 
     $re = '%# Collapse whitespace everywhere but in blacklisted elements.
-        (?>             # Match all whitespans other than single space.
+        (?>             # Match all white spans other than single space.
           [^\S ]\s*     # Either one [\t\r\n\f\v] and zero or more ws,
         | \s{2,}        # or two or more consecutive-any-whitespace.
         ) # Note: The remaining regex consumes no text at all...
@@ -37,7 +38,7 @@ function compress()
     {
         $new_buffer = $buffer;
     }
-
     $CI->output->set_output($new_buffer);
     $CI->output->_display();
 }
+?>

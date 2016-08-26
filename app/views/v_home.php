@@ -33,9 +33,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="container-fluid">
       <form id="subject_info" class="form-horizontal" method="post" action="<?=$HOME?>/check">
         <?php
-            if ($errCode != null)
+            $errMsg = $this->lang->line("error_".$errCode);
+            if ($errMsg != "" && $errMsg != null)
             {
-              echo "<p class='text-danger'><strong>".$this->lang->line("error_".$errCode)."</strong></p>";
+              echo '<div class="alert alert-danger" role="alert">';
+              echo '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>';
+              echo '<span class="sr-only">Error</span>';
+              echo '&nbsp;&nbsp;';
+              echo  $errMsg;
+              echo "</div>";
             }
             else
             {
@@ -44,22 +50,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         ?>
         <!-- Name -->
         <div class="form-group">
-          <label for="name" class="col-sm-3 control-label"><?=$this->lang->line("subject_name")?></label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" id="name" name="name">
+          <label for="name" class="col-sm-3 col-md-3 col-lg-3 control-label"><?=$this->lang->line("subject_name")?></label>
+          <div class="col-sm-9 col-md-9 col-lg-9">
+            <input type="text" class="form-control" id="name" name="name" required>
           </div>
         </div>
         <!-- Occupation -->
         <div class="form-group">
-            <label for="occupation" class="col-sm-3 control-label"><?=$this->lang->line("subject_occupation")?></label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" id="occupation" name="occupation">
+            <label for="occupation" class="col-sm-3 col-md-3 col-lg-3 control-label"><?=$this->lang->line("subject_occupation")?></label>
+            <div class="col-sm-9 col-md-9 col-lg-9">
+                <input type="text" class="form-control" id="occupation" name="occupation" required>
             </div>
         </div>
         <!-- Gender -->
         <div class="form-group">
-          <label for="gender" class="col-sm-3 control-label"><?=$this->lang->line("subject_gender")?></label>
-          <div class="col-sm-9">
+          <label for="gender" class="col-sm-3 col-md-3 col-lg-3 control-label"><?=$this->lang->line("subject_gender")?></label>
+          <div class="col-sm-9 col-md-9 col-lg-9">
             <select class="form-control" id="gender" name="gender">
               <option value=""><?=$this->lang->line("form_select")?></option>
               <option value="1"><?=$this->lang->line("gender_male")?></option>
@@ -69,16 +75,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         <!-- Birthday -->
         <div class="form-group">
-            <label for="birthday" class="col-sm-3 control-label"><?=$this->lang->line("subject_birthday")?></label>
-            <div class="col-sm-9">
-              <input type="text" class="date-picker form-control" id="birthday" name="birthday" placeholder="YYYY-MM-DD"/>
+            <label for="birthday" class="col-sm-3 col-md-3 col-lg-3 control-label"><?=$this->lang->line("subject_birthday")?></label>
+            <div class="col-sm-9 col-md-9 col-lg-9">
+              <input type="text" class="date-picker form-control" id="birthday" name="birthday" placeholder="YYYY-MM-DD" required/>
             </div>
         </div>
 
         <!-- Education -->
         <div class="form-group">
-          <label for="education" class="col-sm-3 control-label"><?=$this->lang->line("subject_education")?></label>
-          <div class="col-sm-9">
+          <label for="education" class="col-sm-3 col-md-3 col-lg-3 control-label"><?=$this->lang->line("subject_education")?></label>
+          <div class="col-sm-9 col-md-9 col-lg-9">
             <select class="form-control" id="education" name="education">
               <option value=""><?=$this->lang->line("form_select")?></option>
               <option value="1"><?=$this->lang->line("education_grade_school")?></option>
@@ -92,8 +98,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         <!-- Blood Type -->
         <div class="form-group">
-          <label for="bloodType" class="col-sm-3 control-label"><?=$this->lang->line("subject_blood_type")?></label>
-          <div class="col-sm-9">
+          <label for="bloodType" class="col-sm-3 col-md-3 col-lg-3 control-label"><?=$this->lang->line("subject_blood_type")?></label>
+          <div class="col-sm-9 col-md-9 col-lg-9">
             <select class="form-control" id="bloodType" name="bloodType">
               <option value=""><?=$this->lang->line("form_select")?></option>
               <option value="A">A</option>
@@ -105,8 +111,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         <!-- Marriage -->
         <div class="form-group">
-          <label for="inputPassword3" class="col-sm-3 control-label"><?=$this->lang->line("subject_marriage")?></label>
-          <div class="col-sm-9">
+          <label for="inputPassword3" class="col-sm-3 col-md-3 col-lg-3 control-label"><?=$this->lang->line("subject_marriage")?></label>
+          <div class="col-sm-9 col-md-9 col-lg-9">
             <select class="form-control" id="marriage" name="marriage">
               <option value=""><?=$this->lang->line("form_select")?></option>
               <option value="1"><?=$this->lang->line("marriage_married")?></option>
@@ -114,7 +120,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </select>
           </div>
         </div>
-
+        <div class="form-group">
+          <label for="captcha" class="col-sm-3 col-md-3 col-lg-3 control-label"><?=$this->lang->line('form_captcha')?></label>
+          <div class="col-sm-5 col-md-5 col-lg-5" id="captcha_container"  title="<?=$IMG?>/loading.gif">
+            <?php echo $captcha?>
+          </div>
+          <div class="col-sm-3 col-md-3 col-lg-3">
+            <input type="text" class="form-control" id="captcha" name="captcha" required>
+          </div>
+          <div class="col-sm-1 col-md-1 col-lg-1" style="margin-top:10px;" id="refresh_captcha" title="<?=$ADMIN?>/getCaptcha">
+            <a href="#"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></a>
+          </div>
+        </div>
         <div class="form-group">
           <div class="col-sm-offset-3 col-sm-10">
             <button type="submit" class="btn btn-default"><?=$this->lang->line("form_submit")?></button>

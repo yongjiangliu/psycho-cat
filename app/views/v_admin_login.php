@@ -1,66 +1,61 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-  </head>
-  <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" style="color:white;"><?=$APP_NAME?></a>
-        </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="<?=$HOME?>">主页</a></li>
+            <li><a href="<?=$HOME?>"><?=$this->lang->line('nav_home')?></a></li>
           </ul>
-        </div><!--/.nav-collapse -->
+        </div>
       </div>
     </nav>
 
-    <div class="container-fluid">
-      <form id="adminLogin" class="form-horizontal" method="post" action="<?=$ADMIN?>/check">
+    <div class="container-fluid" style="min-height:450px;">
+      <form id="admin-login-form" class="form-horizontal" method="post" action="<?=$ADMIN?>/check">
         <?php
-          if ($status == false)
-          {
-            echo "<p class='bg-danger'>用户名或密码错误</p>";
-          }
+        $errMsg = $this->lang->line("error_".$errCode);
+        if ($errMsg != "" && $errMsg != null)
+        {
+            echo '<div class="alert alert-danger" role="alert">';
+            echo '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>';
+            echo '<span class="sr-only">Error</span>';
+            echo '&nbsp;&nbsp;';
+            echo  $errMsg;
+            echo "</div>";
+        }
+        else
+        {
+            echo "";
+        }
         ?>
-        <!-- username -->
         <div class="form-group">
-          <label for="username" class="col-sm-2 control-label">用户</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" id="username" name="username">
+          <label for="username" class="col-sm-3 col-md-3 col-lg-3 control-label"><?=$this->lang->line('admin_user')?></label>
+          <div class="col-sm-9 col-md-9 col-lg-9">
+            <input type="text" class="form-control" id="username" name="username" required>
           </div>
         </div>
-        <!-- password -->
         <div class="form-group">
-            <label for="password" class="col-sm-2 control-label">密码</label>
-            <div class="col-sm-10">
-              <input type="password" class="form-control" id="password" name="password">
+            <label for="password" class="col-sm-3 col-md-3 col-lg-3 control-label"><?=$this->lang->line('admin_pass')?></label>
+            <div class="col-sm-9 col-md-9 col-lg-9">
+              <input type="password" class="form-control" id="password" name="password" required>
             </div>
         </div>
+          <div class="form-group">
+              <label for="captcha" class="col-sm-3 col-md-3 col-lg-3 control-label"><?=$this->lang->line('form_captcha')?></label>
+              <div class="col-sm-5 col-md-5 col-lg-5" id="captcha_container" title="<?=$IMG?>/loading.gif">
+                  <?php echo $captcha?>
+              </div>
+              <div class="col-sm-3 col-md-3 col-lg-3">
+                  <input type="text" class="form-control" id="captcha" name="captcha" required>
+              </div>
+              <div id="refresh_captcha" class="col-sm-1 col-md-1 col-lg-1" style="margin-top:10px;" title="<?=$ADMIN?>/getCaptcha">
+                  <a href="#"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></a>
+              </div>
+          </div>
         <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default">登录</button>
+          <div class="col-sm-offset-3 col-sm-10"">
+            <button type="submit" class="btn btn-default"><?=$this->lang->line('admin_login')?></button>
           </div>
         </div>
         </form>
       </div>
-    </div><!-- /.container -->
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="<?=$JS?>jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="<?=$JS?>jquery.min.js"><\/script>')</script>
-    <script src="<?=$JS?>bootstrap.min.js"></script>
-    <!-- Custom javascript-->
-    <script src="<?=$JS?>common.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="<?=$JS?>ie10-viewport-bug-workaround.js"></script>
-  </body>
-</html>
+    </div>

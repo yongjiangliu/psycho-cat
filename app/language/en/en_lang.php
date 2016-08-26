@@ -20,6 +20,7 @@ $lang['form_submit']                = 'Submit';
 $lang['form_continue']              = 'Continue';
 $lang['form_next']                  = 'Next';
 $lang['form_back']                  = 'Back';
+$lang['form_captcha']               = 'Captcha';
 $lang['gender_male']                = 'Male';
 $lang['gender_female']              = 'Female';
 $lang['education_grade_school']     = 'Grade School';
@@ -50,7 +51,6 @@ $lang['question_type_sc']           = 'Single Choice';
 $lang['question_type_mc']           = 'Multi Choice';
 $lang['question_progress']          = 'Progress';
 
-
 // Errors
 $lang['error']                      = 'Error';
 $lang['error_0']                    = 'Unknown error';
@@ -67,4 +67,11 @@ $lang['error_10']                   = "Form submission failed";
 $lang['error_11']                   = 'Name already exists';
 $lang['error_12']                   = 'Invalid resume code';
 $lang['error_13']                   = "Can't find this test paper";
+$lang['error_14']                   = 'Invalid username or password';
+$lang['error_15']                   = 'Invalid captcha';
+
+// Admin
+$lang['admin_user']                 = 'Username';
+$lang['admin_pass']                 = 'Password';
+$lang['admin_login']                = 'Login';
 ?>
