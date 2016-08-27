@@ -24,9 +24,9 @@ class Admin extends CI_Controller
 	public function index()
 	{
         // is admin session set ? (is user already logged in as admin?)
-		if ($this->sessCheck()){
+		if ($this->tool->adminSessionExists ()){
             // YES, redirect to panel
-            $this->tool->re('admin/panel/answer/get/all');
+            $this->tool->re('admin/panel/exam/get/all');
 		}
 		else
         {
@@ -175,7 +175,7 @@ class Admin extends CI_Controller
             //       which means the user must provide a encrypted
             //       cookie string in HTTP header which contains 'admin' = 'Ane_89M-2kn'
             $this->session->set_userdata('admin', 'Ane_89M-2kn');
-            redirect($this->out['ADMIN']."/panel/answer/get/all");
+            redirect($this->out['ADMIN']."/panel/exam/get/all");
         }
 	}
 
@@ -183,122 +183,144 @@ class Admin extends CI_Controller
 	// type: answer, question, upload
 	public function panel($object="", $cmd = "", $type = "", $val = "")
 	{
-		if ($this->sessCheck()){
-			$out = $this->out;
-			switch ($object) {
-				case "answer":
-						// fetch all answers (ordered by finish_time desc)
-						if ($cmd == "get" && $type == "all")
-						{
-							$out['count'] 	= $this->m_question->count("all");
-							$out['answer'] 	= $this->m_answer->getAll();
-							$out['name'] 		= null;
-							$this->load->view('v_header', $out);
-							$this->load->view("v_admin_answer",$out);
-							break;
-						}
-						// fetch answer by name (ordered by finish_time desc)
-						else if ($cmd == "get" && $type == "name")
-						{
-							$out['count'] 	= $this->m_question->count("all");
-							$out['answer'] 	= $this->m_answer->getByName($this->input->post("name"));
-							$out['name'] 		= $this->input->post("name");
-							$this->load->view('v_header', $out);
-							$this->load->view("v_admin_answer",$out);
-							break;
-						}
-						// fetch answer by aid
-					 else if ($cmd == "get" && $type == "aid" && $val != "")
-					 {
-						 $out['count'] 					= $this->m_question->count("all");
-						 $out['data'] 					= $this->m_answer->get($val);
-						 //----------------------------- Answers display per row
-						 $out['answer_per_row'] = 10;
-						 //-----------------------------
-						 $this->load->view('v_header', $out);
-						 $this->load->view("v_admin_answer_detail",$out);
-						 break;
-					 }
-					 else if ($cmd == "delete" && $type == "aid" && $val != "")
-					 {
-						 $this->m_answer->delete($val);
-						 redirect($path['ADMIN']."/panel/answer/get/all", 'refresh');
-						 break;
-					 }
-					 else if ($cmd =="")
-					 {
-						 redirect($path['ADMIN']."/panel/answer/get/all", 'refresh');
-					 }
-					 else {
-						 show_404();
-						 break;
-					 }
-		    case "question":
-						if ($cmd == "get" && $type == "all")
-						{
-							$out['count_all'] = $this->m_question->count("all");
-							$out['count_sc'] 	= $this->m_question->count("sc");
-							$out['count_mc'] 	= $this->m_question->count("mc");
-							$out['count_jg'] 	= $this->m_question->count("jg");
-							$out['question'] 	= $this->m_question->getAll();
-							$out['last_upload'] = file_get_contents("./upload/last_upload.txt");
-							$this->load->view('v_header', $out);
-							$this->load->view("v_admin_question",$out);
-			      	break;
-						}
-						else if ($cmd == "get" && $type == "type" && $val != "")
-						{
-							$out['count_all'] = $this->m_question->count("all");
-							$out['count_sc'] 	= $this->m_question->count("sc");
-							$out['count_mc'] 	= $this->m_question->count("mc");
-							$out['count_jg'] 	= $this->m_question->count("jg");
-							$out['last_upload'] = file_get_contents("./upload/last_upload.txt");
-							$out['question'] 	= $this->m_question->getByType($val);
-							$this->load->view('v_header', $out);
-							$this->load->view("v_admin_question",$out);
-							break;
-						}
-						else if ($cmd == "")
-						{
-							redirect($path['ADMIN']."/panel/question/get/all");
-							break;
-						}
-						else
-						{
-							show_404();
-							break;
-						}
-
-		    case "upload":
-						if ($cmd == "print" && $type == "error" && $val != "")
-						{
-							$out['errorMsg'] = $val;
-							$this->load->view('v_header', $out);
-							$this->load->view("v_admin_upload",$out);
-							break;
-						}
-						else if ($cmd == "")
-						{
-							$this->load->view('v_header', $out);
-							$this->load->view("v_admin_upload",$out);
-							break;
-						}
-						else
-						{
-							show_404();
-							break;
-						}
-				case "":
-						redirect($path['ADMIN']."/panel/answer/get/all");
-				default:
-						show_404();
-						break;
-			}
-		}
-		else {
-			redirect($path['ERROR']."/code/4");
-		}
-	}
+        // [1] admin session check
+		if (!$this->tool->adminSessionExists())
+        {
+            // redirect to error page and show 'session expired' if admin session check failed
+            $this->re('err/code/3');
+        }
+        // [2] try to parse admin command
+        switch ($object) {
+            // exam command handler
+            case "exam":
+            // get all exam records, DESC by 'finish_at'
+            // route: http://www.mysite.com/admin/panel/exam/get/all
+                if ($cmd == "get" && $type == "all")
+                {
+                    $data['count_question_all']     = $this->m_questions->countAll();
+                    $data['count_exam_all']         = $this->m_exams->countAll();
+                    $data['count_exam_finished']    = $this->m_exams->countFinished();
+                    $data['count_exam_unfinished']  = $this->m_exams->countUnfinished();
+                    $data['exams']  = $this->m_exams->getAll();
+                    $data['name']   = null;
+                    $this->tool->render('admin_exam', $data);
+                    break;
+                }
+                // get exam record by subject_name
+                // route: http://www.mysite.com/admin/panel/exam/get/name/<subject_name>
+                else if ($cmd == "get" && $type == "name")
+                {
+                    $data['count_question_all']     = $this->m_questions->countAll();
+                    $data['count_exam_all']         = $this->m_exams->countAll();
+                    $data['count_exam_finished']    = $this->m_exams->countFinished();
+                    $data['count_exam_unfinished']  = $this->m_exams->countUnfinished();
+                    $data['exams']  = $this->m_exams->getByName($this->input->post("name"));
+                    $data['name'] 	= $this->input->post("name");
+                    $this->tool->render('admin_exam', $data);
+                    break;
+                }
+                // get exam record by exam_id
+                // route: http://www.mysite.com/admin/panel/exam/get/id/<exam_id>
+                else if ($cmd == "get" && $type == "id" && $val != "")
+                {
+                    $data['count_question_all']     = $this->m_questions->countAll();
+                    $data['exams']  = $this->m_exams->getById($val);
+                    $data['name']   = null;
+                    //----------------------------- Answers displayed per row
+                    $data['answer_per_row'] = 10;
+                    //-----------------------------
+                    $this->tool->render('admin_exam_detail', $data);
+                    break;
+                }
+                // get exam record by finish status
+                else if ($cmd == "get" && $type == "finish" && $val != "")
+                {
+                    if ($val != '1' && $val != '0')
+                    {
+                        $this->tool->re('err/code/17');
+                    }
+                    $data['count_question_all']     = $this->m_questions->countAll();
+                    $data['count_exam_all']         = $this->m_exams->countAll();
+                    $data['count_exam_finished']    = $this->m_exams->countFinished();
+                    $data['count_exam_unfinished']  = $this->m_exams->countUnfinished();
+                    $data['exams'] = null;
+                    if ($val == '1')
+                    {
+                        $data['exams'] = $this->m_exams->getFinished();
+                    }
+                    else
+                    {
+                        $data['exam'] = $this->m_exams->getUnfinished();
+                    }
+                    $data['name']   = null;
+                    $this->tool->render('admin_exam', $data);
+                    break;
+                }
+                // delete exam record by exam_id
+                // route: http://www.mysite.com/admin/panel/delete/id/<exam_id>
+                else if ($cmd == "delete" && $type == "id" && $val != "")
+                {
+                    $this->m_exams->deleteById($val);
+                    $this->tool->re("admin/panel/exam/get/all");
+                    break;
+                }
+                else {
+                    show_404();
+                    break;
+                }
+        // question command handler
+        case "question":
+            // get all question records
+            // route: http://www.mysite.com/admin/panel/question/get/all
+            if ($cmd == "get" && $type == "all")
+            {
+                $data['count']          = $this->m_questions->countAll();
+                $data['questions'] 	    = $this->m_questions->getAll();
+                $data['settings']       = $this->m_settings->getAll();
+                $data['count_sc']       = $this->m_questions->countByTypeString('sc');
+                $data['count_mc']       = $this->m_questions->countByTypeString('mc');
+                $this->tool->render('admin_question', $data);
+                break;
+            }
+            // get question records by type
+            // route: http://www.mysite.com/admin/panel/question/get/type/<question_type>
+            else if ($cmd == "get" && $type == "type" && $val != "")
+            {
+                if ($val != 'sc' && $val != 'mc')
+                {
+                    $this->tool->re('err/code/16');
+                }
+                $data['count']          = $this->m_questions->countAll();
+                $data['questions'] 	    = $this->m_questions->getByTypeString($val);
+                $data['settings']       = $this->m_settings->getAll();
+                $data['count_sc']       = $this->m_questions->countByTypeString('sc');
+                $data['count_mc']       = $this->m_questions->countByTypeString('mc');
+                $this->tool->render('admin_question', $data);
+                break;
+            }
+            else
+            {
+                show_404();
+                break;
+            }
+        // upload command handler
+        case "upload":
+            // get upload help
+            // route: http://www.mysite.com/admin/panel/upload/help
+            if ($cmd == "" && $type == "" && $val == "")
+            {
+                $this->tool->render('admin_upload');
+                break;
+            }
+            else
+            {
+                show_404();
+                break;
+            }
+        default:
+            show_404(); break;
+        }
+    }
 
 	// upload question txt file, clear table
   public function upload()
@@ -488,24 +510,6 @@ class Admin extends CI_Controller
 		else {
 			echo "<p><b>题目类型键0不存在</b></p>";
 			return false;
-		}
-	}
-
-	// session check
-	private function sessCheck()
-	{
-		if (!$this->session->has_userdata('admin')){
-			$result = false;
-		}
-		else {
-			$admin = $this->session->userdata('admin');
-			if ($admin == "Ane_89M-2kn")
-			{
-				return true;
-			}
-			else {
-				return false;
-			}
 		}
 	}
 }

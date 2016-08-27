@@ -276,7 +276,7 @@ class Tool
             $out['captcha'] = $this->createCaptcha();
         }
         $this->CI->load->view('v_header', 	$out);
-        $this->CI->load->view('v_'.$view,        $out);
+        $this->CI->load->view('v_'.$view,   $out);
         $this->CI->load->view('v_footer',	$out);
     }
 
@@ -312,6 +312,24 @@ class Tool
         else
         {
             return false;
+        }
+    }
+
+    // session check
+    public function adminSessionExists ()
+    {
+        if (!$this->CI->session->has_userdata('admin')){
+            return false;
+        }
+        else
+        {
+            if ($this->CI->session->userdata('admin') == "Ane_89M-2kn")
+            {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 }

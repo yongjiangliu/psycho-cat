@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <ul class="nav navbar-nav">
     <li><a href="<?=$HOME?>"><?=$this->lang->line("nav_home")?></a></li>
     <li class="active"><a><?=$this->lang->line("subject_name")?>:&nbsp;<?=$exam['subject_name']?></a></li>
-    <li class="active"><a><?=$this->lang->line("question_progress")?>:&nbsp;<?=$question['question_id']?>/<?=$question['count']?></a></li>
+    <li class="active"><a><?=$this->lang->line("question_progress")?>:&nbsp;<?=$question['question_id']?>/<?=$count?></a></li>
     <li class="active">
       <a>
           <?=$this->lang->line("question_type")?>:&nbsp;

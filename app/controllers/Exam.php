@@ -196,6 +196,6 @@ class Exam extends CI_Controller
                         'question'  => $question,
                         'exam'      => $exam
         );
-        $this->tool->render('v_exam', $data);
+        $this->tool->render('exam', $data);
 	}
 }

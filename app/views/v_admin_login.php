@@ -9,7 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </div>
     </nav>
 
-    <div class="container-fluid" style="min-height:450px;">
+    <div class="container-fluid">
       <form id="admin-login-form" class="form-horizontal" method="post" action="<?=$ADMIN?>/check">
         <?php
         $errMsg = $this->lang->line("error_".$errCode);
@@ -30,13 +30,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="form-group">
           <label for="username" class="col-sm-3 col-md-3 col-lg-3 control-label"><?=$this->lang->line('admin_user')?></label>
           <div class="col-sm-9 col-md-9 col-lg-9">
-            <input type="text" class="form-control" id="username" name="username" required>
+            <input id="username" type="text" class="form-control" id="username" name="username" required>
           </div>
         </div>
         <div class="form-group">
             <label for="password" class="col-sm-3 col-md-3 col-lg-3 control-label"><?=$this->lang->line('admin_pass')?></label>
             <div class="col-sm-9 col-md-9 col-lg-9">
-              <input type="password" class="form-control" id="password" name="password" required>
+              <input id="password" type="password" class="form-control" id="password" name="password" required>
             </div>
         </div>
           <div class="form-group">
@@ -53,7 +53,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           </div>
         <div class="form-group">
           <div class="col-sm-offset-3 col-sm-10"">
-            <button type="submit" class="btn btn-default"><?=$this->lang->line('admin_login')?></button>
+            <button id="login_btn" type="submit" class="btn btn-default"><?=$this->lang->line('admin_login')?></button>
           </div>
         </div>
         </form>

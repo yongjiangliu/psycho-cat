@@ -55,3 +55,13 @@ $('#refresh_captcha').click(function()
             g.refreshingCaptcha = false;
         });
 });
+
+
+$('#login_btn').click(function()
+{
+    var pass = $('#password').val();
+    var shaObj = new jsSHA("SHA-1", 'TEXT');
+    shaObj.update(pass);
+    var hash = shaObj.getHash("HEX");
+    $('#password').val(hash);
+});

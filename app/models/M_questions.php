@@ -54,7 +54,7 @@ class M_questions extends CI_Model {
     /**
      * get question by a given type string
      * ASC by question_id
-     * @param $typeString, can be 'jd' = judgement, 'sc' = single choice, 'mc' = multiple choice
+     * @param $typeString, can be 'sc' = single choice, 'mc' = multiple choice
      * @return array
      */
     public function getByTypeString ($typeString)
@@ -233,7 +233,7 @@ class M_questions extends CI_Model {
      */
     public function validTypeString ($typeString)
     {
-        if ($typeString == 'jd' || $typeString == 'sc' || $typeString == 'mc')
+        if ($typeString == 'sc' || $typeString == 'mc')
         {
             return true;
         }

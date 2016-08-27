@@ -24,7 +24,6 @@ body {
   max-width:1536px;
   padding-top:80px;
   margin:0 auto;
-
 }
 
 #test_done_container{
@@ -98,4 +97,8 @@ img {
 .bg-danger{
   padding: 10px 0px 10px 0px;
   text-align: center;
+}
+
+.container-fluid{
+    min-height:500px;
 }

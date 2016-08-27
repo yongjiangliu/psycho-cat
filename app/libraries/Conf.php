@@ -28,6 +28,9 @@ class Conf {
 		$this->config['FONT']          = base_url().'res/fonts/';
 		$this->config['TEMPLATE']      = base_url().'res/template/';
 		$this->config['CAPTCHA']	   = base_url().'res/captcha/';
+        $this->config['TEMPLATE']      = base_url().'res/template/';
+        $this->config['UPLOAD']        = base_url().'upload';
+        $this->config['EXAM_IMG']      = base_url().'res/exam_img/';
 
 		// Controllers
 		$this->config['HOME']          = site_url().'home';

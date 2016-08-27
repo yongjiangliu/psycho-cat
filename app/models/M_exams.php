@@ -342,6 +342,29 @@ class M_exams extends CI_Model {
             return false;
         }
     }
+
+    public function countAll ()
+    {
+        $this->db->select('*');
+        $this->db->from($this->table);
+        return $this->db->count_all_results();
+    }
+
+    public function countFinished ()
+    {
+        $this->db->select('*');
+        $this->db->where('finished', 1);
+        $this->db->from($this->table);
+        return $this->db->count_all_results();
+    }
+
+    public function countUnfinished ()
+    {
+        $this->db->select('*');
+        $this->db->where('finished', 0);
+        $this->db->from($this->table);
+        return $this->db->count_all_results();
+    }
   //-----------
   //    INSERT
   //-----------

@@ -54,7 +54,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         }
                         ?>
                         <div class="form-group">
-                            <label for="resume_code" class="col-sm-4 control-label pull-left"><?=$this->lang->line('resume_code')?></label>
+                            <label for="resume_code" class="col-sm-4 control-label pull-left"><?=$this->lang->line('exam_resume_code')?></label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" id="resume_code" name="resume_code" <?=$disabled?> value="<?=$code?>" required>
                                 <?=$hidden?>

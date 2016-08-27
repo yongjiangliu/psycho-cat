@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
       </div>
     </nav>
-    <div class="container-fluid" style="min-height:300px;">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
                 <div id="error-message-panel" class="panel panel-danger">
