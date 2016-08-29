@@ -12,7 +12,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <?php
             switch ($question['question_type'])
             {
-                case 'sc' : echo $this->lang->line("question_type_sc"); break;
                 case 'mc' : echo $this->lang->line("question_type_mc"); break;
                 case 'jd' : echo $this->lang->line("question_type_jd"); break;
                 default: echo "NULL"; break;
@@ -27,37 +26,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="container-fluid">
       <form id="question_form" style="min-height:400px;" class="form-horizontal" method="post" action="<?=$EXAM?>/next">
         <div class="form-group">
-          <h4><?=$question['question_id']?>.&nbsp;&nbsp;<?=$question['question_content']?></h4>
+            <div class="col-sm-1 col-md-1 col-lg-1">
+                <h4><?=$question['question_id']?>.</h4>
+            </div>
+            <div class="col-sm-11 col-md-11 col-lg-11">
+                <h4><?php echo c($question['question_content'], $EXAM_IMG)?></h4>
+            </div>
         </div>
         <div class="btn-group" data-toggle="buttons">
         <!-- Options -->
         <?php
             $keyMap  = array( 'A','B','C','D','E','F','G','H','I','J');
             $options = array(
-                                $question['option_1'], $question['option_2'], $question['option_3'],
-                                $question['option_4'], $question['option_5'], $question['option_6'],
-                                $question['option_7'], $question['option_8'], $question['option_9'],
-                                $question['option_10']);
+                                c($question['option_1'], $EXAM_IMG), c($question['option_2'], $EXAM_IMG), c($question['option_3'], $EXAM_IMG),
+                                    c($question['option_4'], $EXAM_IMG), c($question['option_5'], $EXAM_IMG), c($question['option_6'], $EXAM_IMG),
+                                        c($question['option_7'], $EXAM_IMG), c($question['option_8'], $EXAM_IMG), c($question['option_9'], $EXAM_IMG),
+                                            c($question['option_10'], $EXAM_IMG));
+            $extra = "";
             switch ($question['question_type'])
             {
-                case 'jd':
-                    for ($i = 0; $i < 2; $i ++)
-                    {
-                        echo "<div class='radio'><label>";
-                        if ($i == 0){$checked = "checked";}else {$checked = "";}
-                        echo "\t\t<input type='radio' name='answer' id='option_".($i+1)."' value='".($i+1)."' ".$checked.">\n";
-                        echo "<strong>".$keyMap[$i]."</strong>.&nbsp;&nbsp;".$options[$i]."</label></div>";
-                    }
-                    echo "<input type='hidden' name='type' value='jd'>";
-                break;
                 case 'sc':
                     foreach ($options as $key => $val)
                     {
-                        if ($key == 0){$checked = "checked";}else {$checked = "";}
+                        if ($key == 0){$extra = "checked autofocus";}else {$extra = "";}
                         if ($val != "" && $val != null)
                         {
                             echo "<div class='radio'><label>";
-                            echo "<input type='radio' name='answer' id='option_".($key+1)."' value='".($key+1)."'".$checked.">";
+                            echo "<input type='radio' name='answer' id='option_".($key+1)."' value='".($key+1)."'".$extra.">";
                             echo "<strong>".$keyMap[$key]."</strong>.&nbsp;&nbsp;".$val."</label></div>";
                         }
                     }
@@ -88,3 +83,43 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </form>
       </div>
     </div><!-- /.container -->
+
+    <?php
+        function c ($str, $EXAM_IMG)
+        {
+            if ($str == "" || $str == null)
+            {
+                return $str;
+            }
+            // replace [i] with <i>
+            $str = str_replace("[i]", "<i>", $str);
+            // replace [/i] with </i>
+            $str = str_replace("[/i]", "</i>", $str);
+
+            // replace [b] with <strong>
+            $str = str_replace("[b]", "<strong>", $str);
+            // replace [/b] with </b>
+            $str = str_replace("[/b]", "</strong>", $str);
+
+            // replace [u] with [u]
+            $str = str_replace("[u]", "<u>", $str);
+            // replace [/u] with </u>
+            $str = str_replace("[/u]", "</u>", $str);
+
+            // replace [r] with <br>
+            $str = str_replace("[r]", "<br>", $str);
+
+            $pattern = '/\[img\].*\[\/img\]/';
+            preg_match($pattern, $str, $matches);
+
+
+            foreach ($matches as $val)
+            {
+                $rp1 = str_replace("[img]", "<img src='".$EXAM_IMG, $val);
+                $rp2 = str_replace("[/img]", "'>", $rp1);
+                $str = str_replace($val, $rp2, $str);
+            }
+            // replace [img] with
+            return $str;
+        }
+    ?>

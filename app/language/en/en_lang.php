@@ -89,12 +89,12 @@ $lang['admin_user']                 = 'Username';
 $lang['admin_pass']                 = 'Password';
 $lang['admin_login']                = 'Login';
 
-$lang['admin_detail']          = 'Detail';
-$lang['admin_remove']          = 'Remove';
+$lang['admin_detail']               = 'Detail';
+$lang['admin_remove']               = 'Remove';
 $lang['admin_no_record']            = "No record";
-$lang['admin_total']           = "Total";
-$lang['admin_finished']        = "Finished";
-$lang['admin_unfinished']      = "Unfinished";
+$lang['admin_total']                = "Total";
+$lang['admin_finished']             = "Finished";
+$lang['admin_unfinished']           = "Unfinished";
 $lang['admin_subject_summary']      = "Subject Summary";
 $lang['admin_exam_summary']         = "Exam Summary";
 $lang['admin_answer_summary']       = "Answer Summary";
@@ -102,12 +102,15 @@ $lang['admin_yes']                  = "Y";
 $lang['admin_no']                   = "N";
 $lang['admin_all']                  = "All";
 
-$lang['admin_how_to_upload_questions']           = "How to Upload Questions";
-$lang['admin_download_excel_template']    = "Download Excel template";
+$lang['admin_how_to_upload_questions']   = "How to Upload Questions";
+$lang['admin_download_excel_template']  = "Download Excel template";
 $lang['admin_excel_template']           = "Excel Template";
 $lang['admin_csv_template']             = "CSV Template";
-$lang['admin_save_as_csv']              = "Edit & Save as CSV file";
-$lang['admin_upload_csv_file']          = "Upload CSV file to database";
+$lang['admin_save_as_csv']              = "Edit Excel file";
+$lang['admin_import_excel_file']        = "Import Excel file to database";
+$lang['admin_import_tip_1']             = "You'd better TRUNCATE the table first";
+$lang['admin_import_tip_2']             = "Use NaviCat or MySQLworkbench to import the xls file. Set 'Field Row' to 1 and 'Start Row' to 2, so fields will be auto-mapped";
+$lang['admin_import_tip_3']             = "You can format the table to remove annoying blank rows";
 $lang['admin_symbol']                   = "Symbol";
 $lang['admin_create']                   = "Create";
 

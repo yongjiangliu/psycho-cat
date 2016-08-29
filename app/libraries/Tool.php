@@ -1,14 +1,17 @@
 <?php
 
 /**
- * Created by IntelliJ IDEA.
- * User: bcli
- * Date: 8/23/16
- * Time: 5:53 PM
+ * Class Tool
+ *
+ * PsychoCat shared functions
+ *
+ * @since   v0.1.0
+ * @author  bcli
+ * @date	2016-7-2
  */
 class Tool
 {
-    private $CI;    // CodeIgniter instance
+    private $CI;
     private $out;
 
     public function __construct()
@@ -18,13 +21,9 @@ class Tool
     }
 
     /**
-     * ------------------------------------
-     *              METHODS
-     * ------------------------------------
-     */
-    /**
-     * get session language, return null if not set
-     * @return langCode or null
+     * get 'lang' field in session, return null if not set
+     * @see    ISO 639-1
+     * @return string $languageCode
      */
     public function getSessionLang ()
     {
@@ -39,15 +38,16 @@ class Tool
     }
 
     /**
-     * set session language
-     * @param $langCode, language code to be set
-     * @return string,   session language
+     * set 'lang' field in session
+     * @see     ISO 639-1
+     * @param   string $langCode, language code to be set
+     * @return  string $languageCode, the language code which has been stored to the session
      */
     public function setSessionLang ($langCode)
     {
         if ($this->langSupported ($langCode))
         {
-            // if we support this language, set session key 'lang' => 'langCode'
+            // if we support this language (defined in ./app/libraries/Conf.php), set session key 'lang' => 'langCode'
             $this->CI->session->set_userdata('lang', $langCode);
             return $langCode;
         }
@@ -60,8 +60,8 @@ class Tool
     }
 
     /**
-     * get language code from HTTP request header
-     * @return string, language code
+     * try to get browser language from HTTP header
+     * @return string $languageCode, the default browser language code
      */
     public function getBrowserLang ()
     {
@@ -70,10 +70,11 @@ class Tool
 
     /**
      * check if we support this language
-     * to define a new supported language,
-     * go to ./app/language to add a new folder & files, then modify config['LANGS'] in ./app/libraries/Conf.php
+     * you can follow these steps to add a new supported language
+     * 1. add a new language folder & file under ./app/language,
+     * 2. modify config['LANGS'] which is defined in ./app/libraries/Conf.php
      * @param $langCode, language code to be checked
-     * @return boolean
+     * @return boolean, whether the language is supported by PsychoCat
      */
     public function langSupported ($langCode)
     {
@@ -91,12 +92,14 @@ class Tool
 
     /**
      * generate a random & unique resume code
+     * 'resume code' can be used to resume a test
      * @return resumeCode, a randomly generated 4 chars string
      */
     public function generateResumeCode ()
     {
         while(true)
         {
+            // chars which can be used to construct a resume code
             $seed = str_split('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.'0123456789');
             shuffle($seed);
             $resumeCode = '';
@@ -113,9 +116,11 @@ class Tool
     }
 
     /**
-     * get user age by birthday
-     * @param birthday, birthday submitted by user in format of YYYY-MM-DD, ex 1900-01-01
-     * @return age, calculated user age
+     * get age by his(her) birthday, please make sure you have set the timezone correctly,
+     * which is located at ./app/config/config.php, $config['time_reference']
+     * @see http://php.net/manual/en/timezones.php  for timezones avaliable in PHP
+     * @param   string $birthday, birthday submitted by user in format of YYYY-MM-DD, ex 1900-01-01
+     * @return  string $age,      calculated user age
      */
     public function getAgeByBirthday ($birthday)
     {
@@ -126,10 +131,11 @@ class Tool
     }
 
     /**
-     * get duration of the exam
-     * @param $startStr
-     * @param $finishStr
-     * @return int
+     * get duration of a exam
+     * calculates the difference of two DateTimes and returns a formatted result
+     * @param string $startStr, when the subject starts the exam
+     * @param string $finishStr, when the subject finishes the exam
+     * @return string $duration,
      */
     public function getExamDuration ($startStr, $finishStr)
     {
@@ -170,9 +176,8 @@ class Tool
     }
 
     /**
-     * create a new captcha
-     * @param $ip, user IP address
-     * @return string $imageURL
+     * generate a new captcha and store the image & data
+     * @return string $captchaImageURL
      */
     public function createCaptcha ()
     {
@@ -205,10 +210,9 @@ class Tool
     }
 
     /**
-     * check if a given captcha is correct
-     * @param $captcha, captcha which user submitted
-     * @param $ip, user IP address
-     * @return bool
+     * if a submitted captcha is correct
+     * @param string $captcha, submitted captcha
+     * @return bool  $isCorrect
      */
     public function captchaCorrect ($captcha)
     {
@@ -229,6 +233,9 @@ class Tool
         }
     }
 
+    /**
+     * 
+     */
     public function renewCaptcha ()
     {
         $expiration = time() - $this->out['CAPTCHA_TTL'];
@@ -246,6 +253,7 @@ class Tool
         $this->CI->db->delete('captcha');
     }
 
+
     public function setLang()
     {
         // try to get language from session
@@ -258,6 +266,7 @@ class Tool
         // set output language
         $this->CI->lang->load($lang, $lang);
     }
+
 
     public function render($view, $extra_data = null, $useCaptcha = false)
     {
@@ -280,15 +289,20 @@ class Tool
         $this->CI->load->view('v_footer',	$out);
     }
 
+    /**
+     * page redirect
+     * @param string $uri, NOTE: don't include the domain (ex: http://www.mysite.com) and don't start with "/"
+     */
     public function re ($uri)
     {
+        // ex: admin/panel/exam/get/all
+        // ex: home/form
         redirect($this->out['SITE'].$uri);
     }
 
-
     /**
-     * check if submitted answers are in a correct format
-     * @param $in
+     * if answer
+     * @param array $in, form POST
      * @return bool
      */
     public function answerFormatCorrect ($in)

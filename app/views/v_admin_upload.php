@@ -33,7 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
             <div class="panel-default">
                 <div class="panel-heading">
-                    <h4 class="panel-title">2. <?=$this->lang->line('admin_save_as_csv')?></h4>
+                    <h4 class="panel-title">2. <?=$this->lang->line('admin_edit_excel')?></h4>
                 </div>
                 <div class="panel-body">
                     <table class="table table-bordered">
@@ -70,14 +70,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
             <div class="panel-default">
                 <div class="panel-heading">
-                    <h4 class="panel-title">3. <?=$this->lang->line('admin_upload_csv_file')?></h4>
+                    <h4 class="panel-title">3. <?=$this->lang->line('admin_import_excel_file')?></h4>
                 </div>
                 <div class="panel-body">
-                    <br>
-                    <form action ="<?=$ADMIN?>/upload" method="POST">
-                        <input type="file" required><br>
-                        <button class="btn-sm btn-default" type="submit"><?=$this->lang->line('form_submit')?></button>
-                    </form>
+                    <ol>
+                        <li><?=$this->lang->line('admin_import_tip_1')?></li>
+                        <li><?=$this->lang->line('admin_import_tip_2')?></li>
+                        <li><?=$this->lang->line('admin_import_tip_3')?></li>
+                    </ol>
                 </div>
             </div>
         </div>

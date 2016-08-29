@@ -183,7 +183,7 @@ class Exam extends CI_Controller
         // [8]  Does the target question exit ?
         if (!$this->m_questions->idExists($question_id))
         {
-            $this->tool->re('error/code/9');
+            $this->tool->re('err/code/9');
         }
 
         // [9] fetch target question

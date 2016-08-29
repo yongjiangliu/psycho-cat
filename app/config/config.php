@@ -475,7 +475,11 @@ $config['compress_output'] = FALSE;
 | the system whether to use your server's local time as the master 'now'
 | reference, or convert it to the configured one timezone. See the 'date
 | helper' page of the user guide for information regarding date handling.
-|
+| ********
+| Comment added by bcli:
+| you can find all available PHP timezones at:
+| http://php.net/manual/en/timezones.php
+| ********
 */
 $config['time_reference'] = 'Asia/Shanghai';
 

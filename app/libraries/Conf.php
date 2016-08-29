@@ -1,25 +1,43 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 /**
- * Project custom configurations
+ * Class Conf
  *
- * @since v0.1.0
- * @author	bcli
+ * PsychoCat configurations
+ *
+ * @since   v0.1.0
+ * @author  bcli
  * @date	2016-7-2
  */
 class Conf {
 
   	public $config;
+    private $CI;
 
 	public function __construct()
 	{
-		$CI =& get_instance();
-		$CI->load->helper('url');
+		$this->CI =& get_instance();
+        /*
+         * ------------------------------------
+         *          Application Name
+         * ------------------------------------
+         */
+        $this->config['APP_NAME']	   = "PsychoCat";
 
-		// Captcha
-		$this->config['CAPTCHA_TTL']   = 600;   // 10 min
+        /*
+         * ------------------------------------
+         *                  URIs
+         * ------------------------------------
+         */
 
+        // Site URL (ex: http://www.mysite.com), defined in ./app/config/config.php
         $this->config['SITE']          = site_url();
+
+        // Controllers
+        $this->config['HOME']          = site_url().'home';
+        $this->config['EXAM']		   = site_url().'exam';
+        $this->config['ADMIN']         = site_url().'admin';
+        $this->config['ERROR']         = site_url().'err';
 
 		// Resources
 		$this->config['CSS']		   = base_url().'res/css/';
@@ -32,18 +50,19 @@ class Conf {
         $this->config['UPLOAD']        = base_url().'upload';
         $this->config['EXAM_IMG']      = base_url().'res/exam_img/';
 
-		// Controllers
-		$this->config['HOME']          = site_url().'home';
-		$this->config['EXAM']		   = site_url().'exam';
-		$this->config['ADMIN']         = site_url().'admin';
-		$this->config['ERROR']         = site_url().'err';
-		$this->config['TEST']          = site_url().'test';
+        /*
+         * ------------------------------------
+         *              Captcha
+         * ------------------------------------
+         */
+        $this->config['CAPTCHA_TTL']   = 600;   // Captcha expiration time in seconds, default 600s = 10m
 
-
-		// Title
-		$this->config['APP_NAME']	   = "PsychoCat";
-
-		// Languages
+        /*
+         * ------------------------------------
+         *              Language
+         * ------------------------------------
+         */
+		// Supported Languages, using language code defined by ISO 639-1
 		$this->config['LANGS']		   = array (
 											'ar' 	=> 'العربية',
 											'en'	=> 'English',
@@ -54,7 +73,11 @@ class Conf {
 											'zh-cn' => '简体中文',
 											'zh-tw' => '繁體中文'
 										);
-		// Regular expressions
+        /*
+         * ------------------------------------
+         *         Regular Expression
+         * ------------------------------------
+         */
 		$this->config['REGEX']		 = array (
 											'subject_form' => array (
 																'name'	        => '/^(.){1,32}$/',

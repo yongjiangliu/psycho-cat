@@ -242,4 +242,12 @@ class M_questions extends CI_Model {
             return false;
         }
     }
+
+    public function format()
+    {
+        $this->db->where('question_content', '');
+        $this->db->delete($this->table);
+        $this->db->where('question_type', '');
+        $this->db->delete($this->table);
+    }
 }
