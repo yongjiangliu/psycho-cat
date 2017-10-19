@@ -6,3 +6,5 @@ node_modules/
 *.iml
 # ignore OSX storage files, others may not have a MBP (I'm COOL, hell yeah!)
 .DS_Store
+# ignore package-lock.json, which will be auto generated after $npm install
+package-lock.json
