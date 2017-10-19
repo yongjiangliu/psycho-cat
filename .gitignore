@@ -1,8 +1,8 @@
-# ignore node_modules
+# ignore node_modules, let others use npm install
 node_modules/
-# ignore idea folder
-.idea/
-# ignore iml files
+# ignore idea folder, others may not use intellj idea as IDE
+.idea
+# ignore iml files, others may not use intellj idea as IDE
 *.iml
-# ignore OSX storage files
-.DS_STORE
+# ignore OSX storage files, others may not have a MBP (I'm COOL, hell yeah!)
+.DS_Store
