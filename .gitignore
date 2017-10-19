@@ -4,5 +4,5 @@ node_modules/
 .idea/
 # ignore iml files
 *.iml
-# ignore possible OSX files
+# ignore OSX storage files
 .DS_STORE
