@@ -1,3 +1,16 @@
-<h1>{{message}}</h1>
-<h2>{{error.status}}</h2>
-<pre>{{error.stack}}</pre>
+<h2>崩溃啦~ （╯‵□′）╯︵┴─┴ </h2>
+<hr>
+<h4 style="text-align:left">错误信息:</h4>
+<h5>{{message}}</h5>
+<p>{{error.status}}</p><br>
+<h4 style="text-align:left">错误日志:</h4>
+<pre id="errorLog" style="text-align: left">
+    {{error.stack}}
+</pre>
+<br>
+<button class="btn-default btn-lg"><a href="https://github.com/bclicn/psycho-cat/issues/new" target="_blank">提交错误并杀了作者祭天</a></button>
+
+<script>
+    var errorLog = document.getElementById("errorLog");
+    errorLog.innerText = "URL: " + window.location.href + '\n' + errorLog.innerText;
+</script>
