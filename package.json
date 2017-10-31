@@ -1,7 +1,17 @@
 {
   "name": "psycho-cat",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
+  "author": {
+      "name": "Beichen Li",
+      "email": "relidin@126.com"
+    },
+  "repository": {
+    "url" : "https://github.com/bclicn/psycho-cat.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bclicn/psycho-cat/issues"
+  },
   "scripts": {
     "start": "node ./bin/www"
   },

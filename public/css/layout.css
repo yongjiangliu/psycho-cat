@@ -27,6 +27,7 @@ a:hover {
 html,
 body {
     height: 100%;
+    min-height: 800px;
     background-color: #333;
 }
 body {
@@ -58,10 +59,13 @@ body {
     padding: 30px;
 }
 
-
 /*
  * Header
  */
+.masthead {
+    background-color: #333;
+}
+
 .masthead-brand {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -125,6 +129,7 @@ body {
 .mastfoot {
     color: #999; /* IE8 proofing */
     color: rgba(255,255,255,.5);
+    background-color: #333;
 }
 
 

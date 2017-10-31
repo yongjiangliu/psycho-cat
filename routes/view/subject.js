@@ -17,13 +17,13 @@ router.get('/', function(req, res, next) {
 });
 
 /**
- * 2. /view/subject/info
+ * 2. /view/subject/bio
  *    受试者在此提供基本信息, 只有提交信息的受试者才能够获得受试者编号,进而开始测试
  *    subject needs to provide basic personal information, only then he/she can get the 'subject ID'
  *    and start/resume the test
  */
-router.get('/info', function(req, res, next) {
-  res.render('sbj-info', { title: '受试者信息', nav:[true,false,false]});
+router.get('/bio', function(req, res, next) {
+  res.render('sbj-bio', { title: '受试者信息', nav:[true,false,false]});
 });
 
 /**
@@ -32,7 +32,7 @@ router.get('/info', function(req, res, next) {
  *    test introductions, provide subject ID (for resuming test) and basic operation methods
  */
 router.get('/intro', function(req, res, next) {
-  res.render('sbj-intro', { title: '测试说明', nav:[true,false,false]});
+  res.render('sbj-intro', { title: '测试说明', nav:[true,false,false] });
 });
 
 /**
@@ -41,7 +41,7 @@ router.get('/intro', function(req, res, next) {
  *     test page, for answering questions
  */
 router.get('/test', function(req, res, next) {
-  res.render('sbj-test', { title: '测试中',nav:[true,false,false]});
+  res.render('sbj-test', { title: '测试中',nav:[true,false,false] });
 });
 
 /**
@@ -50,7 +50,7 @@ router.get('/test', function(req, res, next) {
  *     show this page when the test is done
  */
 router.get('/done', function(req, res, next) {
-  res.render('sbj-done', { title: '测试完成', nav: 0, lang: req.lang});
+  res.render('sbj-done', { title: '测试完成', nav: 0, lang: req.lang });
 });
 
 /**

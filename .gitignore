@@ -8,3 +8,5 @@ node_modules/
 .DS_Store
 # ignore package-lock.json, which will be auto generated after $npm install
 package-lock.json
+# ignore sqlite db files
+db
