@@ -1,6 +1,7 @@
 # Psycho-Cat #
 
 ![psycho-cat](public/img/psycho-cat.jpg)
+
 为HR设计的简易心里测试软件 ([English Version](README.md))
 
 ## 声明

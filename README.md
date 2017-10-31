@@ -1,6 +1,7 @@
 # Psycho-Cat #
 
 ![psycho-cat](public/img/psycho-cat.jpg)
+
 A psychological testing tool for HRs ([中文版说明](README_CN.md))
 
 ## Disclaimer
